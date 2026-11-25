@@ -1,0 +1,423 @@
+---
+/**
+ * Direction D: The Whiteboard. The basics are written on the board on load;
+ * everything else is drawn in as you scroll. Real content from src/data/aaron.ts.
+ * Without JS, or with reduced motion, everything is simply on the board.
+ */
+import Base from '../../layouts/Base.astro';
+import ResumeView from '../../components/ResumeView.astro';
+import {
+  person, whiteboard as wb, skills, skillProof, receipts, stations, ventures, testKitchen, principles,
+} from '../../data/aaron';
+import '@fontsource/permanent-marker';
+import '@fontsource/kalam/400.css';
+import '@fontsource/kalam/700.css';
+import '@fontsource/atkinson-hyperlegible';
+import '@fontsource/atkinson-hyperlegible/700.css';
+
+// The Line, ordered by when each job started.
+const startOrder = ['myaudiopet', 'chickfila', 'copper', 'atlutd', 'winshape', 'nxt'];
+const line = startOrder.map((id) => stations.find((s) => s.id === id)!).filter(Boolean);
+const shortWhere = (w: string) => w.split(' · ')[0];
+const skillAreas = ['ops', 'start', 'growth', 'people'];
+const noteColors = ['yellow', 'pink', 'blue', 'green', 'yellow', 'orange'];
+const isTodo = (s: string) => s.startsWith('TODO(aaron)');
+---
+<Base title={`${person.name} · Operations, programs and teams · Atlanta`} noindex>
+  <div class="fun wb">
+    <!-- ================= THE BASICS ================= -->
+    <section class="board hero" aria-labelledby="wb-hello">
+      <div class="ghost" aria-hidden="true">
+        <span style="top:8%;left:62%;--rot:-6deg">woof water??</span>
+        <span style="top:58%;left:70%;--rot:4deg">soap + fragrance v2</span>
+        <span style="top:78%;left:8%;--rot:-3deg">clothing drop, fri</span>
+      </div>
+
+      <h1 id="wb-hello" class="mk mk-xl write" style="--d:.1s">{wb.hello}</h1>
+      <svg class="scribble underline write-stroke" style="--d:.9s" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 10 C 70 2, 160 14, 297 5" /></svg>
+      <p class="mk mk-l red write" style="--d:1.2s">{wb.line}</p>
+
+      <ul class="basics">
+        <li class="write" style="--d:1.9s">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s7-7.2 7-12.5A7 7 0 0 0 5 9.5C5 14.8 12 22 12 22z"/><circle cx="12" cy="9.5" r="2.5"/></svg>
+          <span>{person.location}</span>
+        </li>
+        <li class="write" style="--d:2.2s">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8 6 8-6M4 6h16v12H4z"/></svg>
+          <a href={`mailto:${person.email}`}>{person.email}</a>
+        </li>
+        <li class="write" style="--d:2.5s">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h4l2 5-3 2a11 11 0 0 0 5 5l2-3 5 2v4a2 2 0 0 1-2 2A17 17 0 0 1 4 5a2 2 0 0 1 2-2z"/></svg>
+          <a href={person.phoneHref}>{person.phone}</a>
+        </li>
+      </ul>
+
+      <p class="lede write-fade" style="--d:2.9s">{wb.positioning}</p>
+      <p class="open write-fade" style="--d:3.1s">{wb.open}</p>
+
+      <div class="hero-actions write-fade" style="--d:3.3s">
+        <a class="sticky sticky-yellow sticky-btn" href={person.resumePdf} download>
+          <span class="tape" aria-hidden="true"></span>
+          Download my resume <span class="small">(PDF)</span>
+        </a>
+        <p class="hint hand">
+          {wb.scrollHint}
+          <svg class="scribble arrow-down" viewBox="0 0 40 80" aria-hidden="true"><path pathLength="1" d="M20 2 C 13 25, 27 48, 20 72 M8 58 L20 74 L33 57" /></svg>
+        </p>
+      </div>
+
+      <div class="tray" aria-hidden="true">
+        <span class="marker m-black"></span><span class="marker m-red"></span><span class="marker m-blue"></span><span class="eraser"></span>
+      </div>
+    </section>
+
+    <!-- ================= WHAT I BRING ================= -->
+    <section class="board" aria-labelledby="wb-bring" data-draw>
+      <h2 id="wb-bring" class="mk mk-h write">{wb.bringHeading}</h2>
+      <div class="mindmap">
+        <svg class="connectors" aria-hidden="true">
+          <line pathLength="1" x1="50%" y1="50%" x2="22%" y2="22%" />
+          <line pathLength="1" x1="50%" y1="50%" x2="78%" y2="22%" />
+          <line pathLength="1" x1="50%" y1="50%" x2="22%" y2="78%" />
+          <line pathLength="1" x1="50%" y1="50%" x2="78%" y2="78%" />
+        </svg>
+        <p class="team-bubble mk" style="--d:.2s">
+          <svg class="scribble bubble-ring" viewBox="0 0 200 110" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 10 C 95 0, 18 14, 8 54 C 0 92, 70 106, 122 101 C 182 94, 199 64, 190 36 C 181 12, 132 3, 90 8" /></svg>
+          Your team
+        </p>
+        {skills.map((s, i) => (
+          <div class={`branch area-${skillAreas[i]}`} style={`--d:${0.5 + i * 0.25}s`}>
+            <svg class="scribble box" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M6 8 C 100 3, 200 10, 294 5 C 297 70, 292 140, 296 194 C 200 198, 100 192, 4 196 C 8 130, 2 70, 6 8" /></svg>
+            <h3 class="mk mk-s">{s.name}</h3>
+            <p>{s.items}</p>
+            <p class="proof hand">
+              <svg class="check" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M3 13 L9 19 L21 4" /></svg>
+              {skillProof[s.name]}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- ================= THE NUMBERS ================= -->
+    <section class="board" aria-labelledby="wb-numbers" data-draw>
+      <h2 id="wb-numbers" class="mk mk-h write">{wb.numbersHeading}</h2>
+      <ul class="numbers">
+        {receipts.map((r, i) => (
+          <li style={`--d:${0.3 + i * 0.3}s`}>
+            <span class="num-wrap">
+              <span class={`num mk ${r.total === 'PROFITABLE' ? 'num-word' : ''}`}>{r.total === 'PROFITABLE' ? 'Profitable' : r.total}</span>
+              <svg class="scribble ring" viewBox="0 0 200 110" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M150 10 C 95 0, 18 14, 8 54 C 0 92, 70 106, 122 101 C 182 94, 199 64, 190 36 C 181 12, 132 3, 90 8" /></svg>
+            </span>
+            <span class="num-label">{r.plain}</span>
+            <span class="num-where hand">at {shortWhere(r.where)}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ================= WHERE I'VE DONE IT ================= -->
+    <section class="board" aria-labelledby="wb-line" data-draw>
+      <h2 id="wb-line" class="mk mk-h write">{wb.lineHeading}</h2>
+      <ol class="flow">
+        {line.map((s, i) => (
+          <li class={`flow-step sticky sticky-${noteColors[i]}`} style={`--d:${0.2 + i * 0.18}s; --rot:${[-1.5, 1.2, -0.8, 1.6, -1.2, 0.9][i]}deg`}>
+            <span class="tape" aria-hidden="true"></span>
+            <h3 class="mk mk-s">{s.org}</h3>
+            <p class="role">{isTodo(s.title) ? <span class="todo">{s.title}</span> : s.title}</p>
+            <p class="dates hand">{s.dates}</p>
+            <details>
+              <summary>What I ran</summary>
+              <ul>
+                {s.ran.map((r) => <li class={isTodo(r) ? 'todo' : ''}>{r}</li>)}
+              </ul>
+            </details>
+            {i < line.length - 1 && (
+              <svg class="scribble flow-arrow" viewBox="0 0 80 40" aria-hidden="true"><path pathLength="1" d="M2 20 C 25 13, 50 27, 72 20 M60 8 L74 20 L58 32" /></svg>
+            )}
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- ================= THINGS I'VE STARTED ================= -->
+    <section class="board started" aria-labelledby="wb-started" data-draw>
+      <div class="ghost" aria-hidden="true">
+        <span style="top:12%;left:58%;--rot:5deg">idea #31?</span>
+        <span style="top:70%;left:4%;--rot:-4deg">pricing??</span>
+        <span style="top:86%;left:60%;--rot:2deg">try again monday</span>
+      </div>
+      <h2 id="wb-started" class="mk mk-h write">{wb.startedHeading}</h2>
+      <p class="motto hand write-fade" style="--d:.4s">{testKitchen.motto}</p>
+      <p class="intro write-fade" style="--d:.6s">{testKitchen.intro}</p>
+      <ul class="ventures">
+        {ventures.map((v, i) => (
+          <li class={`venture status-${v.status.replace(' ', '-')}`} style={`--d:${0.6 + i * 0.2}s`}>
+            <svg class="scribble box" viewBox="0 0 300 200" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" vector-effect="non-scaling-stroke" d="M6 8 C 100 3, 200 10, 294 5 C 297 70, 292 140, 296 194 C 200 198, 100 192, 4 196 C 8 130, 2 70, 6 8" /></svg>
+            <p class="v-when hand">{v.when}</p>
+            <h3 class="mk mk-s">{v.name}</h3>
+            <p class={isTodo(v.pitch) ? 'todo' : ''}>{v.pitch}</p>
+            <p class={isTodo(v.happened) ? 'todo' : ''}><strong>What happened:</strong> {v.happened}</p>
+            <p class={isTodo(v.taught) ? 'todo' : ''}><strong>What it taught me:</strong> {v.taught}</p>
+            <span class="v-status hand">{v.status === 'shipped' ? 'still running' : v.status}</span>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <!-- ================= HOW I WORK ================= -->
+    <section class="board" aria-labelledby="wb-how" data-draw>
+      <h2 id="wb-how" class="mk mk-h write">{wb.howHeading}</h2>
+      <ol class="how">
+        {principles.map((p, i) => (
+          <li style={`--d:${0.3 + i * 0.2}s`}>
+            <span class="how-n mk" aria-hidden="true">{i + 1}</span>
+            <div>
+              <p class="how-line hand">{p.line}</p>
+              <p class="how-proof">{p.proof}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <!-- ================= LET'S TALK ================= -->
+    <section class="board contact" aria-labelledby="wb-contact" data-draw>
+      <h2 id="wb-contact" class="mk mk-xl write">{wb.contactHeading}</h2>
+      <svg class="scribble underline" viewBox="0 0 300 16" preserveAspectRatio="none" aria-hidden="true"><path pathLength="1" d="M3 10 C 70 2, 160 14, 297 5" /></svg>
+      <p class="lede">{wb.contactIntro}</p>
+      <ul class="contact-notes">
+        <li class="sticky sticky-yellow" style="--d:.3s;--rot:-2deg"><span class="tape" aria-hidden="true"></span><span class="hand">Email</span><a href={`mailto:${person.email}`}>{person.email}</a></li>
+        <li class="sticky sticky-pink" style="--d:.5s;--rot:1.5deg"><span class="tape" aria-hidden="true"></span><span class="hand">Phone</span><a href={person.phoneHref}>{person.phone}</a></li>
+        <li class="sticky sticky-blue" style="--d:.7s;--rot:-1deg"><span class="tape" aria-hidden="true"></span><span class="hand">LinkedIn</span>{person.linkedin.startsWith('http') ? <a href={person.linkedin}>LinkedIn profile</a> : <span class="todo">{person.linkedin}</span>}</li>
+        <li class="sticky sticky-green" style="--d:.9s;--rot:2deg"><span class="tape" aria-hidden="true"></span><span class="hand">Resume</span><a href={person.resumePdf} download>Download PDF</a></li>
+      </ul>
+      <p class="signoff hand">{wb.signoff}</p>
+    </section>
+  </div>
+
+  <div class="boring">
+    <ResumeView headingLevel={2} />
+  </div>
+</Base>
+
+<script>
+  // Mark JS as present so the "draw on scroll" starting states apply.
+  // Without JS, or with reduced motion, nothing is ever hidden.
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && 'IntersectionObserver' in window) {
+    root.classList.add('wb-anim');
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      }
+    }, { rootMargin: '0px 0px -15% 0px', threshold: 0.05 });
+    document.querySelectorAll('[data-draw]').forEach((el) => io.observe(el));
+    // If someone jumps straight to the footer or prints, never leave the board blank.
+    window.addEventListener('beforeprint', () => document.querySelectorAll('[data-draw]').forEach((el) => el.classList.add('in')));
+  }
+</script>
+
+<style>
+  :global(main) { max-width: none; padding: 0; }
+  :global(body) { background: #ddd6c8; }
+
+  .wb {
+    --board: #fbfaf6; --ink: #1f2328; --red: #c22f2a; --blue: #1d4fa3; --green: #1d7347; --muted: #4a4f57;
+    --frame: linear-gradient(90deg, #b9bcc0, #e9ebee 40%, #a7abb0);
+    --yellow: #ffe57f; --pink: #ffc4d6; --bluenote: #c5e3ff; --greennote: #c9f0c4; --orange: #ffd2a6;
+    color: var(--ink); font-family: 'Atkinson Hyperlegible', system-ui, sans-serif; font-size: 1.0625rem; line-height: 1.55;
+    padding: .5rem .5rem 2rem;
+  }
+  @media (min-width: 760px) { .wb { padding: 1.5rem 1.5rem 3rem; } }
+
+  .mk { font-family: 'Permanent Marker', 'Kalam', cursive; font-weight: 400; letter-spacing: .01em; }
+  .hand { font-family: 'Kalam', cursive; }
+  .mk-xl { font-size: clamp(2.4rem, 9vw, 5rem); line-height: 1.05; margin: 0; }
+  .mk-l { font-size: clamp(1.45rem, 4.6vw, 2.3rem); line-height: 1.2; margin: .4rem 0 1rem; }
+  .mk-h { font-size: clamp(1.8rem, 5.5vw, 2.8rem); line-height: 1.1; margin: 0 0 1.5rem; }
+  .mk-s { font-size: 1.35rem; line-height: 1.15; margin: 0 0 .35rem; }
+  .red { color: var(--red); }
+  .todo { background: #fff1a8; outline: 1px dashed #b68a00; }
+
+  /* ---------- the board ---------- */
+  .board {
+    position: relative; max-width: 72rem; margin: 0 auto 1.25rem; padding: 2rem 1.25rem 2.5rem;
+    background:
+      linear-gradient(115deg, rgba(255,255,255,.0) 30%, rgba(255,255,255,.75) 45%, rgba(255,255,255,0) 60%),
+      radial-gradient(ellipse at 20% 10%, #ffffff, var(--board) 60%);
+    border: 10px solid transparent; border-image: var(--frame) 1;
+    box-shadow: 0 10px 30px rgba(60,45,20,.18), inset 0 0 40px rgba(0,0,0,.035);
+    overflow: hidden;
+  }
+  @media (min-width: 760px) { .board { padding: 3rem 3.5rem 3.5rem; border-width: 14px; } }
+
+  /* Ghosting: half-erased marks from earlier ideas. */
+  .ghost span {
+    position: absolute; font-family: 'Permanent Marker', cursive; font-size: clamp(1.4rem, 4vw, 2.6rem);
+    color: rgba(31,35,40,.06); transform: rotate(var(--rot)); white-space: nowrap; pointer-events: none;
+    filter: blur(.6px);
+  }
+
+  /* ---------- hero ---------- */
+  .hero { min-height: min(92svh, 52rem); display: flex; flex-direction: column; justify-content: center; }
+  .underline { display: block; width: min(30rem, 85%); height: 16px; margin-top: .25rem; }
+  .basics { list-style: none; padding: 0; margin: 0 0 1.25rem; display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font-family: 'Kalam', cursive; font-size: 1.25rem; }
+  .basics li { display: inline-flex; align-items: center; gap: .4rem; }
+  .basics a { color: var(--blue); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  .icon { width: 1.3rem; height: 1.3rem; fill: none; stroke: var(--ink); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .lede { max-width: 40rem; font-size: 1.15rem; margin: 0 0 .5rem; }
+  .open { max-width: 40rem; color: var(--muted); margin: 0 0 1.75rem; }
+  .hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem; }
+  .hint { display: inline-flex; align-items: center; gap: .5rem; font-size: 1.2rem; color: var(--muted); margin: 0; }
+  .arrow-down { width: 26px; height: 52px; }
+
+  /* marker tray */
+  .tray { position: absolute; left: 0; right: 0; bottom: 0; height: 18px; background: linear-gradient(#c9ccd0, #9da1a6); display: flex; gap: 10px; align-items: flex-end; padding: 0 1.5rem 6px; }
+  .marker { width: 64px; height: 12px; border-radius: 3px 6px 6px 3px; position: relative; }
+  .marker::after { content: ''; position: absolute; right: -9px; top: 3px; width: 10px; height: 6px; border-radius: 0 3px 3px 0; background: inherit; filter: brightness(.7); }
+  .m-black { background: #2a2d31; } .m-red { background: var(--red); } .m-blue { background: var(--blue); }
+  .eraser { width: 70px; height: 16px; background: linear-gradient(#3b3b3b 55%, #d9d2c3 55%); border-radius: 3px; margin-left: auto; }
+
+  /* ---------- sticky notes ---------- */
+  .sticky { position: relative; background: var(--yellow); padding: 1rem 1rem .9rem; box-shadow: 0 2px 0 rgba(0,0,0,.05), 0 10px 18px -8px rgba(60,40,0,.35); transform: rotate(var(--rot, -1deg)); }
+  .sticky-yellow { background: var(--yellow); } .sticky-pink { background: var(--pink); } .sticky-blue { background: var(--bluenote); }
+  .sticky-green { background: var(--greennote); } .sticky-orange { background: var(--orange); }
+  .tape { position: absolute; top: -10px; left: 50%; width: 70px; height: 20px; transform: translateX(-50%) rotate(-3deg); background: rgba(255,255,255,.6); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+  .sticky-btn { display: inline-block; font-family: 'Kalam', cursive; font-weight: 700; font-size: 1.3rem; color: var(--ink); text-decoration: none; padding: 1rem 1.4rem; min-height: 44px; }
+  .sticky-btn:hover { transform: rotate(0deg) translateY(-2px); }
+  .small { font-weight: 400; font-size: .95rem; }
+
+  /* ---------- scribbles ---------- */
+  .scribble { overflow: visible; }
+  .scribble path, .connectors line { fill: none; stroke: var(--ink); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+  .underline path { stroke: var(--red); stroke-width: 4; }
+  .arrow-down path { stroke: var(--muted); }
+
+  /* ---------- what I bring: mind map ---------- */
+  .mindmap { position: relative; display: grid; gap: 1.25rem; }
+  .connectors { display: none; }
+  .team-bubble { position: relative; justify-self: center; margin: 0 0 .5rem; padding: 1.4rem 2.4rem; font-size: 1.8rem; color: var(--red); text-align: center; }
+  .bubble-ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .bubble-ring path { stroke: var(--red); }
+  .branch { position: relative; padding: 1.25rem 1.25rem 1.1rem; }
+  .branch .box, .venture .box { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; }
+  .branch > *:not(svg), .venture > *:not(svg) { position: relative; z-index: 1; }
+  .branch p { margin: 0 0 .5rem; }
+  .branch .mk-s { color: var(--blue); }
+  .proof { display: flex; gap: .4rem; align-items: flex-start; font-size: 1.1rem; color: var(--green); margin: 0 !important; }
+  .check { flex: 0 0 1.3rem; width: 1.3rem; height: 1.3rem; margin-top: .2rem; }
+  .check path { stroke: var(--green); stroke-width: 3.5; fill: none; }
+  @media (min-width: 900px) {
+    .mindmap { grid-template-columns: 1fr auto 1fr; grid-template-areas: "ops . start" ". team ." "growth . people"; gap: 1rem 2rem; }
+    .connectors { display: block; position: absolute; inset: 0; width: 100%; height: 100%; }
+    .connectors line { stroke: #9aa0a8; stroke-width: 2.5; stroke-dasharray: .02 .015; }
+    .team-bubble { grid-area: team; align-self: center; margin: 0; background: var(--board); }
+    .area-ops { grid-area: ops; } .area-start { grid-area: start; } .area-growth { grid-area: growth; } .area-people { grid-area: people; }
+    .branch { background: rgba(251,250,246,.92); }
+  }
+
+  /* ---------- numbers ---------- */
+  .numbers { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2rem 2rem; }
+  .numbers li { display: flex; flex-direction: column; align-items: flex-start; gap: .35rem; }
+  .num-wrap { position: relative; display: inline-block; padding: .6rem 1.4rem .5rem 1.1rem; }
+  .num { font-size: clamp(2.3rem, 7vw, 3.2rem); line-height: 1; color: var(--red); }
+  .num-word { font-size: clamp(1.7rem, 4.4vw, 2.1rem); }
+  .ring { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .ring path { stroke: var(--ink); stroke-width: 2.5; }
+  .num-label { font-weight: 700; }
+  .num-where { color: var(--muted); font-size: 1.1rem; }
+
+  /* ---------- flow of jobs ---------- */
+  .flow { list-style: none; padding: 0; margin: 0; display: grid; gap: 2.75rem; }
+  .flow-step { max-width: 26rem; }
+  .flow-step .mk-s { font-size: 1.45rem; }
+  .role { font-weight: 700; margin: 0; }
+  .dates { margin: 0 0 .4rem; color: var(--muted); font-size: 1.05rem; }
+  .flow-step details { font-size: .98rem; }
+  .flow-step summary { cursor: pointer; font-family: 'Kalam', cursive; font-weight: 700; font-size: 1.1rem; min-height: 44px; display: flex; align-items: center; gap: .3rem; }
+  .flow-step ul { margin: .25rem 0 0; padding-left: 1.1rem; }
+  .flow-step li + li { margin-top: .25rem; }
+  .flow-arrow { position: absolute; left: 50%; bottom: -2.6rem; width: 2.2rem; height: 2.4rem; transform: translateX(-50%) rotate(90deg); }
+  .flow-arrow path { stroke: var(--muted); }
+  @media (min-width: 900px) {
+    .flow { grid-template-columns: repeat(3, 1fr); gap: 3rem 3.25rem; align-items: start; }
+    .flow-arrow { left: auto; right: -3.2rem; top: 2.25rem; bottom: auto; width: 3rem; height: 1.6rem; transform: none; }
+    .flow-step:nth-child(3) .flow-arrow { right: auto; left: 50%; top: auto; bottom: -2.9rem; transform: translateX(-50%) rotate(90deg); width: 2.4rem; }
+    /* second row reads right to left, like a snake on a real whiteboard */
+    .flow-step:nth-child(4) { grid-column: 3; grid-row: 2; }
+    .flow-step:nth-child(5) { grid-column: 2; grid-row: 2; }
+    .flow-step:nth-child(6) { grid-column: 1; grid-row: 2; }
+    .flow-step:nth-child(4) .flow-arrow, .flow-step:nth-child(5) .flow-arrow { right: auto; left: -3.2rem; transform: scaleX(-1); }
+  }
+
+  /* ---------- things I've started ---------- */
+  .motto { font-size: clamp(1.4rem, 4vw, 1.9rem); color: var(--red); margin: -.75rem 0 .25rem; }
+  .intro { max-width: 40rem; margin: 0 0 1.75rem; }
+  .ventures { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; }
+  .venture { position: relative; padding: 1.25rem 1.25rem 2.75rem; font-size: 1rem; }
+  .venture p { margin: 0 0 .5rem; }
+  .v-when { color: var(--muted); margin: 0 !important; }
+  .v-status { position: absolute; right: 1rem; bottom: .8rem; font-weight: 700; font-size: 1.1rem; padding: 0 .5rem; border: 2.5px solid currentColor; border-radius: 999px; transform: rotate(-4deg); }
+  .status-shipped .v-status { color: var(--green); }
+  .status-retired .v-status { color: var(--muted); }
+  .status-shipped .box path { stroke: var(--green); stroke-width: 4; }
+
+  /* ---------- how I work ---------- */
+  .how { list-style: none; padding: 0; margin: 0; display: grid; gap: 1.25rem; max-width: 50rem; }
+  .how li { display: grid; grid-template-columns: 3rem 1fr; gap: .75rem; align-items: start; }
+  .how-n { display: grid; place-items: center; width: 2.6rem; height: 2.6rem; border: 3px solid var(--blue); border-radius: 50% 45% 52% 48%; color: var(--blue); font-size: 1.4rem; }
+  .how-line { font-size: 1.5rem; font-weight: 700; margin: 0; line-height: 1.2; }
+  .how-proof { margin: .2rem 0 0; }
+
+  /* ---------- contact ---------- */
+  .contact { text-align: left; }
+  .contact .underline { margin-bottom: 1rem; }
+  .contact-notes { list-style: none; padding: 0; margin: 1.5rem 0 2rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: 1.75rem 1.25rem; }
+  .contact-notes li { display: flex; flex-direction: column; gap: .2rem; min-height: 6.5rem; }
+  .contact-notes .hand { font-size: 1.2rem; font-weight: 700; }
+  .contact-notes a { color: var(--ink); font-weight: 700; overflow-wrap: anywhere; text-underline-offset: 3px; }
+  .signoff { font-size: clamp(1.3rem, 3.6vw, 1.7rem); color: var(--red); margin: 0; }
+
+  /* ================= ANIMATION (only when JS is on and motion is allowed) ================= */
+  @keyframes write { from { clip-path: inset(-10% 100% -10% 0); } to { clip-path: inset(-10% -2% -10% 0); } }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+  @keyframes stick { from { opacity: 0; transform: rotate(var(--rot, -1deg)) translateY(-14px) scale(1.04); } to { opacity: 1; transform: rotate(var(--rot, -1deg)); } }
+
+  /* Hero writes itself on load. */
+  :global(.wb-anim) .hero .write { animation: write .8s steps(18, end) var(--d, 0s) both; }
+  :global(.wb-anim) .hero .write-fade { animation: fade-up .5s ease-out var(--d, 0s) both; }
+  :global(.wb-anim) .hero .write-stroke path { stroke-dasharray: 1; animation: draw .5s ease-out var(--d, 0s) both; }
+  :global(.wb-anim) .hero .arrow-down path { stroke-dasharray: 1; animation: draw .6s ease-out 3.7s both; }
+
+  /* Everything else draws when it scrolls into view. */
+  :global(.wb-anim) [data-draw]:not(.in) .write,
+  :global(.wb-anim) [data-draw]:not(.in) .write-fade,
+  :global(.wb-anim) [data-draw]:not(.in) .branch,
+  :global(.wb-anim) [data-draw]:not(.in) .team-bubble,
+  :global(.wb-anim) [data-draw]:not(.in) .numbers li,
+  :global(.wb-anim) [data-draw]:not(.in) .flow-step,
+  :global(.wb-anim) [data-draw]:not(.in) .venture,
+  :global(.wb-anim) [data-draw]:not(.in) .how li,
+  :global(.wb-anim) [data-draw]:not(.in) .contact-notes li { opacity: 0; }
+  :global(.wb-anim) [data-draw]:not(.in) .scribble path,
+  :global(.wb-anim) [data-draw]:not(.in) .check path { stroke-dasharray: 1; stroke-dashoffset: 1; }
+
+  :global(.wb-anim) [data-draw].in .write { animation: write .7s steps(16, end) both; }
+  :global(.wb-anim) [data-draw].in .write-fade { animation: fade-up .5s ease-out var(--d, 0s) both; }
+  :global(.wb-anim) [data-draw].in .team-bubble,
+  :global(.wb-anim) [data-draw].in .branch,
+  :global(.wb-anim) [data-draw].in .numbers li,
+  :global(.wb-anim) [data-draw].in .venture,
+  :global(.wb-anim) [data-draw].in .how li { animation: fade-up .45s ease-out var(--d, 0s) both; }
+  :global(.wb-anim) [data-draw].in .flow-step,
+  :global(.wb-anim) [data-draw].in .contact-notes li { animation: stick .45s cubic-bezier(.2,.9,.3,1.3) var(--d, 0s) both; }
+  :global(.wb-anim) [data-draw].in .scribble path { stroke-dasharray: 1; animation: draw .7s ease-out calc(var(--d, 0s) + .15s) both; }
+  :global(.wb-anim) [data-draw].in .branch .check path,
+  :global(.wb-anim) [data-draw].in .branch .box path { stroke-dasharray: 1; animation: draw .6s ease-out calc(var(--d, 0s) + .2s) both; }
+  :global(.wb-anim) [data-draw].in .connectors line { animation: fade-up .6s ease-out .3s both; }
+
+  @media print { .wb { display: none; } }
+</style>

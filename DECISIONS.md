@@ -16,6 +16,12 @@ A running log. Every rule broken on purpose gets an entry: the rule, how it was 
 - **C. The Receipt Is the Page:** the hero is a single thermal receipt, off center, with a misregistered red rubber stamp for the headline.
 - **40th tab:** A reads in one glance and is the friendliest to a thumb. B is the most memorable but dark screens feel less "forward this to a VP." C is the most original, but the name sits below the receipt on a phone, which puts the 10-second test at risk unless the receipt header does that job (it does say AARON ADAMS, but small).
 
+### Checkpoint 2b: direction D, The Whiteboard (`/lab/whiteboard`)
+- **Why it exists:** Aaron's feedback. Less founder framing ("hand me a problem"), more general. Show the basics first, then reveal experience and what he brings to a team as you scroll.
+- **What it is:** the basics are written on the board on load: name, "I run operations, programs and teams," location, email, phone, resume. Each section after that draws itself in as it scrolls into view: a mind map of what he brings to a team, circled numbers, sticky notes for every job, ventures in hand-drawn boxes, a numbered "how I work" list, and sticky notes for contact.
+- **40th tab:** the whole 10-second test is answered before the first animation ends. The marker font is used only for headings and short labels. Anything you need to actually read (bullets, numbers, proof) is set in Atkinson Hyperlegible. With reduced motion or no JavaScript, the whole board is already filled in.
+- **Weird place:** whiteboard ghosting. The faint, half-erased marks left behind after a board is wiped show up as the ghosts of earlier ventures ("woof water??", "soap + fragrance v2"). It's the "make 50 things, throw away 47" idea, shown without a word of explanation.
+
 ## Conventions broken on purpose
 
 _Filled in as the styled build lands. Candidates so far:_

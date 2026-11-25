@@ -408,3 +408,32 @@ export const seo = {
   description:
     'Aaron Adams builds and runs operations for growing businesses: process design, inventory, staffing, fulfillment and growth. Based in the Atlanta metro. Hand him a problem.',
 };
+
+/**
+ * Whiteboard direction (lab). General audience: operations, program management,
+ * growth and general management. Not founder-focused.
+ */
+export const whiteboard = {
+  hello: "Hi, I'm Aaron Adams.",
+  line: 'I run operations, programs and teams.',
+  open: 'Open to operations, program management, growth and general management roles.',
+  positioning:
+    'I build and run the operations that keep a business moving: process design, inventory and supply chain, hiring and staffing, fulfillment, and the systems that connect them.',
+  scrollHint: "Keep scrolling. I'll keep writing.",
+  bringHeading: 'What I bring to your team',
+  numbersHeading: 'The numbers',
+  lineHeading: "Where I've done it",
+  startedHeading: "Things I've started",
+  howHeading: 'How I work',
+  contactHeading: "Let's talk.",
+  contactIntro: 'Hiring for operations, programs or growth? I would love to hear what your team is working on.',
+  signoff: 'This board gets erased every night. My follow-through does not.',
+};
+
+/** One real example per skill area, for the whiteboard mind map. */
+export const skillProof: Record<string, string> = {
+  Operations: '125,000+ inventory items tracked across concurrent programs at WinShape Camps.',
+  'Starting things': 'Started NXT from nothing and made it profitable.',
+  Growth: '110% enrollment lift in one week from a targeted marketing push.',
+  People: 'Led teams of 10+ at Chick-fil-A and Copper Coin Coffee.',
+};
