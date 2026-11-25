@@ -1,5 +1,10 @@
 ---
 import { person, seo } from '../data/aaron';
+import '@fontsource/permanent-marker';
+import '@fontsource/kalam/400.css';
+import '@fontsource/kalam/700.css';
+import '@fontsource/atkinson-hyperlegible';
+import '@fontsource/atkinson-hyperlegible/700.css';
 import '../styles/global.css';
 
 interface Props {
@@ -22,7 +27,7 @@ const ogImage = new URL('/og.png', Astro.site).toString();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
-    <meta name="theme-color" content="#f6efe0" />
+    <meta name="theme-color" content="#fbfaf6" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="profile" />
@@ -33,7 +38,7 @@ const ogImage = new URL('/og.png', Astro.site).toString();
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="A cream thermal receipt reading: Aaron Adams. Operations and general management. Hand me a problem." />
+    <meta property="og:image:alt" content="A whiteboard with Hi, I'm Aaron Adams written in black marker and I run operations, programs and teams in red." />
     <meta name="twitter:card" content="summary_large_image" />
 
     <script type="application/ld+json" set:html={JSON.stringify({

@@ -4,10 +4,9 @@
  * Used by boring mode on "/" and as the whole page at "/resume".
  * Kept deliberately simple so it pastes cleanly into an ATS.
  */
-import { person, receipts, stations, skills, tools, education } from '../data/aaron';
+import { person, results, jobs, skills, tools, education } from '../data/aaron';
 const { headingLevel = 1 } = Astro.props as { headingLevel?: 1 | 2 };
 const H = headingLevel === 1 ? 'h1' : 'h2';
-const ordered = [...stations].reverse();
 ---
 <article class="resume" aria-label="Resume, plain version">
   <header class="r-head">
@@ -29,13 +28,13 @@ const ordered = [...stations].reverse();
   <section>
     <h2 class="r-h">Selected results</h2>
     <ul>
-      {receipts.map((r) => <li>{r.plain} <span class="r-muted">({r.where.split(' · ')[0]})</span></li>)}
+      {results.map((r) => <li>{r.plain} <span class="r-muted">({r.where.split(' · ')[0]})</span></li>)}
     </ul>
   </section>
 
   <section>
     <h2 class="r-h">Experience</h2>
-    {ordered.map((s) => (
+    {jobs.map((s) => (
       <div class="r-job">
         <h3 class="r-job-title">
           <span>{s.title}, {s.org}</span>

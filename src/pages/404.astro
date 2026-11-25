@@ -1,0 +1,16 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Erased · Aaron Adams" description="This page is not on the board." noindex>
+  <div class="fun nf">
+    <h1 class="nf-h">Someone erased this part of the board.</h1>
+    <p>The page you wanted isn't here. Everything else is.</p>
+    <p><a href="/">Back to the board</a> · <a href="/resume">Plain resume</a></p>
+  </div>
+  <div class="boring"><p>Page not found. <a href="/">Home</a> · <a href="/resume">Resume</a></p></div>
+</Base>
+<style>
+  .nf { min-height: 60vh; display: grid; align-content: center; gap: .5rem; }
+  .nf-h { font-family: 'Permanent Marker', cursive; font-weight: 400; font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.1; margin: 0; }
+  .nf a { color: #1d4fa3; font-weight: 700; }
+</style>

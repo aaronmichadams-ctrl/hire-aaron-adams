@@ -2,35 +2,47 @@
 
 A running log. Every rule broken on purpose gets an entry: the rule, how it was broken, and why it serves the recruiter. Every major step answers one question: **what does this feel like for a tired recruiter on their 40th tab?**
 
-## Step log
-
-### Checkpoint 1: bad but complete
-- **What it is:** every section built with real content, unstyled. Boring mode and `/resume` already work. All copy lives in `src/data/aaron.ts`.
-- **40th tab:** the facts are all there and the resume button is in a sticky header from the first pixel. Ugly, but a recruiter can already do their job on it. That's the floor the fun gets built on, not the other way around.
-- **Source handling:** where the brief and the resume PDF disagree, the site shows a visible `TODO(aaron):` with both versions instead of picking one. Lines I'd written that went past the sources (reasons and causes I had inferred) were removed before the checkpoint.
-- **Missing input:** `PRINCIPLES.md` was not in the repo or in Drive. "How I work" uses the principles quoted in the build brief until the file arrives.
-
-### Checkpoint 2: three hero directions (`/lab`)
-- **A. The Rail:** cream paper, ketchup-red headline, tickets clipped to a steel rail that runs off the right edge. Swipe on a phone.
-- **B. Expo Screen:** a kitchen display system. Problems arrive as timed orders. On phones the bump bar is pinned at the bottom, under the thumb.
-- **C. The Receipt Is the Page:** the hero is a single thermal receipt, off center, with a misregistered red rubber stamp for the headline.
-- **40th tab:** A reads in one glance and is the friendliest to a thumb. B is the most memorable but dark screens feel less "forward this to a VP." C is the most original, but the name sits below the receipt on a phone, which puts the 10-second test at risk unless the receipt header does that job (it does say AARON ADAMS, but small).
-
-### Checkpoint 2b: direction D, The Whiteboard (`/lab/whiteboard`)
-- **Why it exists:** Aaron's feedback. Less founder framing ("hand me a problem"), more general. Show the basics first, then reveal experience and what he brings to a team as you scroll.
-- **What it is:** the basics are written on the board on load: name, "I run operations, programs and teams," location, email, phone, resume. Each section after that draws itself in as it scrolls into view: a mind map of what he brings to a team, circled numbers, sticky notes for every job, ventures in hand-drawn boxes, a numbered "how I work" list, and sticky notes for contact.
-- **40th tab:** the whole 10-second test is answered before the first animation ends. The marker font is used only for headings and short labels. Anything you need to actually read (bullets, numbers, proof) is set in Atkinson Hyperlegible. With reduced motion or no JavaScript, the whole board is already filled in.
-- **Weird place:** whiteboard ghosting. The faint, half-erased marks left behind after a board is wiped show up as the ghosts of earlier ventures ("woof water??", "soap + fragrance v2"). It's the "make 50 things, throw away 47" idea, shown without a word of explanation.
-
 ## Conventions broken on purpose
 
-_Filled in as the styled build lands. Candidates so far:_
+### 1. The centered hero
+- **Rule:** big centered name, centered tagline, centered button.
+- **How it's broken:** the hero is a whiteboard that writes itself, left-aligned, the way a person writes. Faint half-erased marks from old ideas sit in the background.
+- **Why it serves the recruiter:** it reads like someone walking you through who they are, in order. Name, what I do, where I am, how to reach me, resume. The 10-second facts are the first four lines written, not a centered slogan you have to decode.
 
-1. **Centered hero.** Broken by: an asymmetric hero where the tickets run off the edge of the screen. Why: a cut-off ticket tells the eye there is more to pull, the way a carousel never does.
-2. **Three-column skills grid.** Broken by: skills printed as an itemized ticket, not cards. Why: TBD at styled build.
-3. **Gray vertical timeline.** Broken by: a horizontal "line" of kitchen stations. Why: it reads left to right like a career does, and it collapses to a plain list on phones and for screen readers.
+### 2. The three-column skills grid
+- **Rule:** three or four equal cards of skill keywords.
+- **How it's broken:** a mind map with "Your team" circled in the middle and the four skill areas branching out from it. Each branch carries one real result as a green check.
+- **Why it serves the recruiter:** the question a hiring manager is asking is "what does this person add to my team," not "what keywords does he know." Putting their team at the center answers that, and attaching a proof to every skill means no claim floats without evidence.
+
+### 3. The gray vertical timeline
+- **Rule:** a thin gray line down the page with dots and dates.
+- **How it's broken:** each job is a sticky note, oldest first, joined by hand-drawn arrows. On desktop the notes snake across the board in two rows, the way people actually lay out a process on a whiteboard. Details sit behind a "What I ran" tap.
+- **Why it serves the recruiter:** the arrows show a direction (kitchen line to warehouse to camps to a pro club to running a company), which tells a story a list of dates doesn't. It is still a plain ordered list underneath, so phones get a single clean column and screen readers get a normal list.
+
+### 4. Hiding the "real" resume
+- **Rule:** portfolio sites bury the plain resume, or skip it.
+- **How it's broken:** the header has a switch labeled "My boss is walking by" that swaps the whole board for a plain, print-ready resume. `/resume` links straight to it.
+- **Why it serves the recruiter:** the fun version is for reading; the boring version is for forwarding, printing and pasting into an ATS. Making it a joke makes it findable.
 
 ## Inspiration from weird places
 
-- **Misregistered parking-ticket stamp** (direction C): the red "HAND ME A PROBLEM" stamp is deliberately off the box, rotated and slightly broken up, the way a stamp lands on a parking ticket when the attendant is in a hurry.
-- **Kitchen display system bump bar** (direction B): the four big buttons along the bottom of a KDS are designed for greasy hands in a hurry. That's the same problem as a thumb on a phone.
+- **Whiteboard ghosting.** When a whiteboard is wiped, faint traces of old writing stay behind. The board shows ghosts of earlier ventures ("woof water??", "soap + fragrance v2", "clothing drop, fri") behind the real content. It is the "make 50 things, throw away 47" idea, shown without a word of explanation.
+- **The marker tray.** The aluminum ledge with three markers and an eraser at the bottom of the first board is what makes it read as a whiteboard rather than a white box.
+
+## Step log
+
+### Checkpoint 1: bad but complete
+- Every section built with real content, unstyled. Boring mode and `/resume` worked from day one. All copy lives in `src/data/aaron.ts`.
+- **40th tab:** the facts were all there and the resume button was in a sticky header from the first pixel. Ugly, but a recruiter could already do their job on it.
+- **Source handling:** where the brief and the resume PDF disagree, the site shows a visible `TODO(aaron):` with both versions instead of picking one. Lines that went past the sources (inferred reasons and causes) were removed.
+- **Missing input:** `PRINCIPLES.md` was not in the repo or in Drive. "How I work" uses the principles quoted in the build brief until the file arrives.
+
+### Checkpoint 2: hero directions
+- Three kitchen-themed directions (ticket rail, expo screen, one long receipt), then a fourth: the whiteboard.
+- **Aaron's call:** go all in on the whiteboard, and move away from founder framing ("Hand me a problem") toward a general operator who can join any team. The kitchen sketches were removed; they are in git history.
+
+### Checkpoint 3: styled build
+- The whiteboard is the homepage. The basics write themselves on load; every later section draws itself in as it scrolls into view (underlines, circles, arrows, checkmarks, sticky notes landing).
+- **40th tab:** everything in the 10-second test is on the first phone screen before the write-on finishes, and the resume button is in the sticky header the whole time. The marker font is only for headings and short labels; anything you actually read is in Atkinson Hyperlegible, a typeface designed for legibility. Nothing is ever hidden behind an animation for someone with reduced motion or no JavaScript: the board is simply already full.
+- **Checks run:** Lighthouse (mobile) 100 performance, 100 accessibility, 100 best practices, 100 SEO on `/`; 100s on `/resume`. Keyboard: skip link, header, every link and disclosure reachable with visible focus; the boring switch works with Space and Enter. Boring mode persists across reloads. Print: 2 pages from `/` and `/resume`. 375px: no horizontal scroll on any page. Copy: `npm run build` fails on any em dash.
+- **Performance decision:** CSS is inlined into each page (`inlineStylesheets: 'always'`) so the first paint does not wait on a stylesheet request. Fonts are self-hosted, no third-party requests.
