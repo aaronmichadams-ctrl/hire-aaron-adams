@@ -10,8 +10,10 @@ interface Props {
   /** Text after the name in the file bar, e.g. "Portfolio" or "Resume". */
   file?: string;
   noindex?: boolean;
+  /** false = the page draws its own header */
+  chrome?: boolean;
 }
-const { title = seo.title, description = seo.description, file = 'Portfolio 2026', noindex = false } = Astro.props;
+const { title = seo.title, description = seo.description, file = 'Portfolio 2026', noindex = false, chrome = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImage = new URL('/og.png', Astro.site).toString();
 ---
@@ -52,7 +54,7 @@ const ogImage = new URL('/og.png', Astro.site).toString();
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header class="bar">
+    {chrome && <header class="bar">
       <a class="bar-file" href="/">
         <span class="bar-mark" aria-hidden="true"></span>
         <span class="bar-name">{person.name}</span>
@@ -64,7 +66,7 @@ const ogImage = new URL('/og.png', Astro.site).toString();
         <a class="bar-link hide-sm" href={`mailto:${person.email}`}>Email</a>
         <a class="bar-cta" href={person.resumePdf} download>Download resume</a>
       </nav>
-    </header>
+    </header>}
     <main id="main" tabindex="-1">
       <slot />
     </main>

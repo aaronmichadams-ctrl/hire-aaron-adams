@@ -1,0 +1,246 @@
+---
+// Option 2: in the style of fotmob.com player pages. Light gray page, white stat cards, colored profile band.
+import Base from '../../layouts/Base.astro';
+import { person, results, jobs, skills, ventures, education } from '../../data/aaron';
+import '@fontsource-variable/dm-sans';
+const initials = (s: string) => s.split(/\s+/).filter((w) => /[A-Za-z]/.test(w[0])).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+const yearOf = (ym: string) => Number(ym.slice(0, 4));
+const yearsIn = 2026 - yearOf(jobs[jobs.length - 1].start);
+const teamSize: Record<string, string> = { chickfila: '10+', copper: '10+', nxt: '6 staff' };
+const roleTag: Record<string, string> = { nxt: 'Founder', atlutd: 'Ops', winshape: 'Ops', copper: 'Lead', chickfila: 'Lead', myaudiopet: 'Ops' };
+const logoColor = ['#c8102e', '#111', '#1d6fd8', '#7a4b2a', '#e51636', '#5b5bd6'];
+---
+<Base title="Option 2 · Aaron Adams" noindex chrome={false}>
+  <div class="o2">
+    <header class="o2-top">
+      <a class="o2-logo" href="#top">AARON ADAMS</a>
+      <nav class="o2-nav" aria-label="Sections"><a href="#career">Career</a><a href="#stats">Results</a><a href="#started">Ventures</a></nav>
+      <a class="o2-round" href={person.linkedin} rel="noopener" aria-label="LinkedIn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 8.5v10M6.5 5.5v.01M10.5 18.5v-6a3 3 0 0 1 6 0v6M10.5 12.5v6" /></svg></a>
+      <a class="o2-round" href={`mailto:${person.email}`} aria-label="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7l8 6 8-6M4 6h16v12H4z" /></svg></a>
+    </header>
+
+    <div id="top" class="o2-grid">
+      <div class="o2-main">
+        <!-- profile -->
+        <section class="o2-card o2-profile" aria-labelledby="o2-name">
+          <div class="o2-band">
+            <span class="o2-avatar" aria-hidden="true">AA</span>
+            <div>
+              <h1 id="o2-name">{person.name}</h1>
+              <p>Operations &amp; general management</p>
+            </div>
+            <a class="o2-follow" href={person.resumePdf} download>Download resume</a>
+          </div>
+          <div class="o2-profile-body">
+            <dl class="o2-attrs">
+              <div><dt>{person.location.replace(' metro', '')}</dt><dd>Based in</dd></div>
+              <div><dt>{yearsIn} years</dt><dd>Since Aug 2018</dd></div>
+              <div><dt>{jobs.length}</dt><dd>Roles held</dd></div>
+              <div><dt>Founder</dt><dd>NXT, Aug 2023 to now</dd></div>
+              <div><dt>B.S. {education.year.slice(-4)}</dt><dd>{education.school}</dd></div>
+              <div><dt>Spanish</dt><dd>Studied through level 3</dd></div>
+            </dl>
+            <div class="o2-position">
+              <p class="o2-pos-h">Position</p>
+              <p class="o2-pos-k">Primary</p>
+              <p>Operations</p>
+              <p class="o2-pos-k o2-pos-k2">Others</p>
+              <p>Program management<br />Growth<br />General management</p>
+              <div class="o2-pitch" aria-hidden="true">
+                <span class="o2-box o2-box-t"></span><span class="o2-mid"></span><span class="o2-box o2-box-b"></span>
+                <b class="o2-dot o2-dot-1">OPS</b><b class="o2-dot o2-dot-2">PM</b><b class="o2-dot o2-dot-3">GM</b>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- season stats -->
+        <section id="stats" class="o2-card" aria-labelledby="o2-s">
+          <h2 id="o2-s" class="o2-card-h">Career highlights</h2>
+          <ul class="o2-stats">
+            {results.map((r, i) => (
+              <li>
+                <span class={`o2-num ${i === 1 ? 'o2-num-badge' : ''}`}>{r.figure}</span>
+                <span class="o2-lab">{r.plain}</span>
+                <span class="o2-src">{r.where.split(' · ')[0]}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <!-- match log -->
+        <section class="o2-card" aria-labelledby="o2-log">
+          <div class="o2-card-hrow"><h2 id="o2-log" class="o2-card-h">Role log</h2><a class="o2-small" href="/resume">Full resume</a></div>
+          <div class="o2-table-wrap">
+            <table class="o2-table">
+              <thead><tr><th scope="col">Start</th><th scope="col">Organization</th><th scope="col">Role</th><th scope="col">Team</th><th scope="col">Type</th></tr></thead>
+              <tbody>
+                {jobs.map((j) => (
+                  <tr>
+                    <td class="o2-muted">{j.dates.split(' to ')[0]}</td>
+                    <td><span class="o2-mini" style={`--c:${logoColor[jobs.indexOf(j)]}`} aria-hidden="true">{initials(j.org)}</span>{j.org}</td>
+                    <td>{j.title}</td>
+                    <td class="o2-muted">{teamSize[j.id] ?? '-'}</td>
+                    <td><span class={`o2-tag o2-tag-${roleTag[j.id].toLowerCase()}`}>{roleTag[j.id]}</span></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- traits -->
+        <section class="o2-card" aria-labelledby="o2-t">
+          <h2 id="o2-t" class="o2-card-h">Strengths</h2>
+          <ul class="o2-traits">
+            {skills.map((s) => (
+              <li><p class="o2-trait-h">{s.name}</p><p class="o2-muted">{s.items}</p><p class="o2-trait-p">{s.proof}</p></li>
+            ))}
+          </ul>
+        </section>
+      </div>
+
+      <aside class="o2-side">
+        <section id="career" class="o2-card" aria-labelledby="o2-c">
+          <h2 id="o2-c" class="o2-card-h">Career</h2>
+          <p class="o2-group">Experience</p>
+          <ol class="o2-career">
+            {jobs.map((j, i) => (
+              <li>
+                <details>
+                  <summary>
+                    <span class="o2-crest" style={`--c:${logoColor[i]}`} aria-hidden="true">{initials(j.org)}</span>
+                    <span class="o2-c-txt"><strong>{j.org}</strong><span>{j.dates.replace(' to ', ' - ')}</span></span>
+                    <span class="o2-chev" aria-hidden="true">›</span>
+                  </summary>
+                  <ul>{j.ran.map((r) => <li>{r}</li>)}</ul>
+                </details>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section id="started" class="o2-card" aria-labelledby="o2-v">
+          <h2 id="o2-v" class="o2-card-h">Things I've started</h2>
+          <ul class="o2-trophies">
+            {ventures.map((v) => (
+              <li>
+                <span class="o2-count">{v.when}</span>
+                <div><strong>{v.name}</strong><p>{v.pitch}</p>{v.url && <a href={v.url} rel="noopener">{v.url.replace('https://www.', '')}</a>}</div>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="o2-card o2-contact" aria-labelledby="o2-k">
+          <h2 id="o2-k" class="o2-card-h">Contact</h2>
+          <a class="o2-row-link" href={`mailto:${person.email}`}><span>Email</span><strong>{person.email}</strong></a>
+          <a class="o2-row-link" href={person.phoneHref}><span>Phone</span><strong>{person.phone}</strong></a>
+          <a class="o2-row-link" href={person.linkedin} rel="noopener"><span>LinkedIn</span><strong>aaron-adams96</strong></a>
+        </section>
+      </aside>
+    </div>
+  </div>
+</Base>
+
+<style>
+  :global(body) { background: #fafafa; }
+  .o2 { --red: #b8231b; --ink: #111; --muted: #6b6b6b; --line: #ececec; --green: #12803c; --orange: #b9560b;
+    font-family: 'DM Sans Variable', system-ui, sans-serif; color: var(--ink); font-size: .95rem; line-height: 1.45; }
+  .o2 a { color: inherit; }
+  .o2-top { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; gap: 1rem; height: 4.25rem; padding: 0 max(1rem, calc((100% - 80rem) / 2)); background: #fff; border-bottom: 1px solid var(--line); }
+  .o2-logo { font-weight: 800; font-size: 1.35rem; letter-spacing: -.02em; text-decoration: none; margin-right: auto; }
+  .o2-nav { display: none; gap: 2rem; font-weight: 700; font-size: 1.05rem; margin-right: 1rem; }
+  .o2-nav a { text-decoration: none; }
+  @media (min-width: 760px) { .o2-nav { display: flex; } }
+  .o2-round { width: 2.5rem; height: 2.5rem; border-radius: 50%; background: #f1f1f1; display: grid; place-items: center; }
+  .o2-round svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+  .o2-grid { max-width: 80rem; margin: 0 auto; padding: 1rem .75rem 4rem; display: grid; gap: 1rem; }
+  @media (min-width: 1000px) { .o2-grid { grid-template-columns: minmax(0, 1fr) 26rem; padding: 1.25rem 1rem 4rem; } }
+  .o2-main, .o2-side { display: grid; gap: 1rem; align-content: start; }
+  .o2-card { background: #fff; border-radius: 16px; border: 1px solid var(--line); overflow: hidden; }
+  .o2-card-h { font-size: 1.15rem; font-weight: 600; margin: 0; padding: 1.4rem 1.5rem 1rem; }
+  .o2-card-hrow { display: flex; align-items: center; justify-content: space-between; padding-right: 1.5rem; }
+  .o2-small { font-size: .9rem; font-weight: 600; }
+  .o2-muted { color: var(--muted); }
+
+  .o2-band { display: flex; align-items: center; gap: 1rem; background: var(--red); color: #fff; padding: 1.25rem 1.5rem; flex-wrap: wrap; }
+  .o2-avatar { width: 4.25rem; height: 4.25rem; border-radius: 50%; background: #fff; color: var(--red); display: grid; place-items: center; font-weight: 800; font-size: 1.4rem; letter-spacing: -.03em; flex: none; }
+  .o2-band h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 600; line-height: 1.1; }
+  .o2-band p { margin: .15rem 0 0; font-size: 1.1rem; }
+  .o2-follow { margin-left: auto; background: #fff; color: var(--red) !important; border-radius: 999px; padding: .55rem 1.1rem; font-weight: 700; text-decoration: none; }
+  .o2-profile-body { display: grid; }
+  @media (min-width: 760px) { .o2-profile-body { grid-template-columns: 1fr 1fr; } }
+  .o2-attrs { margin: 0; padding: .5rem 1.5rem 1rem; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; }
+  .o2-attrs div { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .o2-attrs dt { font-size: 1.05rem; }
+  .o2-attrs dd { margin: .1rem 0 0; color: var(--muted); font-size: .88rem; }
+  .o2-position { position: relative; padding: 1.5rem; border-top: 1px solid var(--line); min-height: 15rem; }
+  @media (min-width: 760px) { .o2-position { border-top: 0; border-left: 1px solid var(--line); } }
+  .o2-position p { margin: 0; }
+  .o2-pos-h { font-weight: 600; font-size: 1.05rem; margin-bottom: 1rem !important; }
+  .o2-pos-k { color: var(--red); font-weight: 600; margin-top: .25rem !important; }
+  .o2-pos-k2 { color: var(--muted); margin-top: 1rem !important; }
+  .o2-pitch { position: absolute; right: 1.5rem; top: 1.5rem; width: 9rem; height: 12.5rem; background: #f2f2f2; border-radius: 6px; overflow: hidden; }
+  .o2-box { position: absolute; left: 22%; right: 22%; height: 16%; border: 2px solid #fff; }
+  .o2-box-t { top: -2px; } .o2-box-b { bottom: -2px; }
+  .o2-mid { position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid #fff; }
+  .o2-mid::after { content: ''; position: absolute; left: 50%; top: -1.3rem; width: 2.6rem; height: 2.6rem; transform: translateX(-50%); border: 2px solid #fff; border-radius: 50%; }
+  .o2-dot { position: absolute; font-size: .72rem; font-weight: 700; color: #fff; padding: .15rem .45rem; border-radius: 999px; }
+  .o2-dot-1 { left: 50%; top: 40%; transform: translateX(-50%); background: var(--red); }
+  .o2-dot-2 { left: 18%; top: 62%; background: #6b6b6b; } .o2-dot-3 { right: 14%; top: 62%; background: #6b6b6b; }
+  @media (max-width: 420px) { .o2-pitch { width: 7rem; height: 10rem; } }
+
+  .o2-stats { list-style: none; margin: 0; padding: .25rem 1.5rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; text-align: center; }
+  @media (min-width: 760px) { .o2-stats { grid-template-columns: repeat(4, 1fr); } }
+  .o2-stats li { display: grid; gap: .3rem; justify-items: center; }
+  .o2-num { font-size: 1.6rem; font-weight: 600; letter-spacing: -.02em; }
+  .o2-num-badge { background: var(--green); color: #fff; border-radius: 6px; padding: 0 .5rem; }
+  .o2-lab { color: var(--ink); font-size: .9rem; }
+  .o2-src { color: var(--muted); font-size: .8rem; }
+
+  .o2-table-wrap { overflow-x: auto; padding: 0 0 .75rem; }
+  .o2-table { width: 100%; border-collapse: collapse; min-width: 32rem; }
+  .o2-table th { text-align: left; font-weight: 600; font-size: .85rem; color: var(--muted); padding: .6rem .75rem; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .o2-table td { padding: .7rem .75rem; border-bottom: 1px solid #f4f4f4; }
+  .o2-table td:first-child, .o2-table td:last-child { white-space: nowrap; }
+  .o2-table th:last-child, .o2-table td:last-child { padding-right: 1.5rem; }
+  .o2-table th:first-child, .o2-table td:first-child { padding-left: 1.5rem; }
+  .o2-mini { display: inline-grid; place-items: center; width: 1.4rem; height: 1.4rem; border-radius: 50%; background: var(--c); color: #fff; font-size: .6rem; font-weight: 800; margin-right: .55rem; vertical-align: -.3rem; }
+  .o2-tag { display: inline-block; min-width: 4.2rem; text-align: center; border-radius: 6px; padding: .1rem .45rem; font-weight: 700; font-size: .8rem; color: #fff; }
+  .o2-tag-founder { background: var(--green); } .o2-tag-lead { background: var(--orange); } .o2-tag-ops { background: #5a5a5a; }
+
+  .o2-traits { list-style: none; margin: 0; padding: 0 1.5rem 1.25rem; display: grid; gap: 0 1.5rem; }
+  @media (min-width: 760px) { .o2-traits { grid-template-columns: 1fr 1fr; } }
+  .o2-traits li { padding: 1rem 0; border-top: 1px solid var(--line); }
+  .o2-traits p { margin: 0; }
+  .o2-trait-h { font-weight: 600; font-size: 1.05rem; }
+  .o2-trait-p { margin-top: .4rem !important; color: var(--red); font-weight: 600; }
+
+  .o2-group { margin: 0; padding: .25rem 1.5rem .5rem; color: var(--muted); font-weight: 600; border-top: 1px solid var(--line); padding-top: 1rem; }
+  .o2-career { list-style: none; margin: 0; padding: 0 0 .5rem; }
+  .o2-career summary { list-style: none; display: grid; grid-template-columns: 2.25rem 1fr auto; gap: .8rem; align-items: center; padding: .7rem 1.5rem; cursor: pointer; }
+  .o2-career summary::-webkit-details-marker { display: none; }
+  .o2-career summary:hover { background: #fafafa; }
+  .o2-crest { width: 2.25rem; height: 2.25rem; border-radius: 50%; background: var(--c); color: #fff; display: grid; place-items: center; font-size: .75rem; font-weight: 800; }
+  .o2-c-txt { display: grid; }
+  .o2-c-txt strong { font-weight: 500; }
+  .o2-c-txt span { color: var(--muted); font-size: .9rem; }
+  .o2-chev { color: var(--muted); font-size: 1.3rem; transition: transform .15s; }
+  .o2-career details[open] .o2-chev { transform: rotate(90deg); }
+  .o2-career ul { margin: 0 1.5rem .75rem 4.55rem; padding-left: 1rem; color: var(--muted); font-size: .9rem; }
+
+  .o2-trophies { list-style: none; margin: 0 1.25rem 1.25rem; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .o2-trophies li { display: grid; grid-template-columns: 4.75rem 1fr; gap: .75rem; padding: 1rem; }
+  .o2-trophies li + li { border-top: 1px solid var(--line); }
+  .o2-trophies p { margin: .15rem 0; color: var(--muted); font-size: .9rem; }
+  .o2-trophies a { font-weight: 600; font-size: .9rem; }
+  .o2-count { font-weight: 600; font-size: .9rem; color: var(--muted); padding-top: .1rem; }
+
+  .o2-contact { padding-bottom: .75rem; }
+  .o2-row-link { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 1.5rem; border-top: 1px solid var(--line); text-decoration: none; }
+  .o2-row-link span { color: var(--muted); }
+  .o2-row-link strong { font-weight: 600; overflow-wrap: anywhere; text-align: right; }
+  .o2-row-link:hover { background: #fafafa; }
+</style>
