@@ -1,5 +1,44 @@
 # Decisions
 
+> **Current design: the canvas (Nov 2026).** Entries further down describe earlier versions (the whiteboard, and the kitchen ideas before it) and are kept as history.
+
+## The canvas redesign
+
+**Aaron's brief:** start over, lose "My boss is walking by," make it look less AI-generated, and take inspiration from Figma.
+
+**What it borrows from Figma:**
+- **The canvas:** a dotted gray canvas, with each section as a white frame labeled in small gray text above it (intro, results, experience, and so on).
+- **Multiplayer:** "operations" carries a coral selection box with a name tag ("Aaron"), the way a collaborator's selection shows up in a shared file. A blue cursor labeled "You" hovers by the Download resume button. The recruiter is in the file with him.
+- **The properties panel:** location, the roles he's open to, what he's doing right now, and contact details, laid out like a design tool's panel. The facts a recruiter scans for are in one predictable box.
+- **The file bar:** "Aaron Adams / Portfolio 2026" on the left, and Download resume as the blue button where Figma puts Share.
+- **Components:** the four skill areas are dashed purple component boxes, each with a comment pin holding one real result.
+- **FigJam stickies** for the ventures, and a **comment thread** for "How I work."
+- **A timeline** of every job on a real time axis, the kind of chart a program manager lives in. It shows the overlaps (fulfillment while running a kitchen; NXT alongside Atlanta United) that a list of dates hides. Each row opens for the details.
+
+**How it avoids looking AI-generated:**
+- No gradients, no glassy cards, no emoji, and no all-caps label above every heading.
+- Sections don't all share one template: tiles, a chart, dashed components, stickies and a thread each look different.
+- The color tiles have deliberately uneven shapes.
+- The copy is plain and specific.
+- The type is Instrument Sans for display and Inter (Figma's own UI font) for interface details.
+
+**Conventions broken on purpose:**
+1. **Hero as a centered slogan:** replaced by the name, one sentence, and a properties panel. *Why:* the 10-second facts (name, role, location, contact) sit in one scannable place instead of being sprinkled around.
+2. **Gray vertical timeline:** replaced by a horizontal time-scaled chart. *Why:* it shows how long each job lasted and what overlapped, which says more about workload than a list does. Underneath it's still a plain ordered list, so phones get stacked rows and screen readers hear a normal list.
+3. **Matching skill cards:** replaced by "components" that each carry proof. *Why:* no skill appears without evidence attached.
+4. **"Let's talk." footer:** replaced by "Say hi." and the email set large. *Why:* the next step is one tap, and the line is less generic.
+
+**Removed:** boring mode and the "My boss is walking by" switch. `/resume` stays as a plain page for ATS pasting and is linked from the contact frame. Printing the homepage prints that plain resume.
+
+**40th tab:** name, role, location and a blue Download resume button are all on the first phone screen. Nothing animates except two slow-drifting cursors, which stop with reduced motion.
+
+**Checks:**
+- Lighthouse (mobile): 100 performance, 100 accessibility, 100 best practices, 100 SEO on `/` and `/resume`.
+- Every link and timeline row is reachable by keyboard, with visible focus, and rows open with Enter.
+- Print is 2 pages, and no page scrolls sideways at 375px.
+- White text sits on a darker blue (`#0a6bc4`) than Figma's selection blue, so buttons pass WCAG AA.
+
+
 A running log. Every rule broken on purpose gets an entry: the rule, how it was broken, and why it serves the recruiter. Every major step answers one question: **what does this feel like for a tired recruiter on their 40th tab?**
 
 ## Conventions broken on purpose

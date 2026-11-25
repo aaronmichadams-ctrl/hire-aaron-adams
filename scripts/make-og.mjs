@@ -1,43 +1,43 @@
 // Renders public/og.png (1200x630), the link preview for LinkedIn, Slack and email.
-// Run: npm run og   (uses the Playwright + Chromium preinstalled on the machine, or `npx playwright`)
+// Run: npm run og   (needs Playwright with Chromium: `npx playwright install chromium`)
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const root = fileURLToPath(new URL('..', import.meta.url));
-const font = (p) => readFileSync(root + 'node_modules/@fontsource/' + p).toString('base64');
-const marker = font('permanent-marker/files/permanent-marker-latin-400-normal.woff2');
-const kalam = font('kalam/files/kalam-latin-700-normal.woff2');
-const atk = font('atkinson-hyperlegible/files/atkinson-hyperlegible-latin-700-normal.woff2');
+const font = (p) => readFileSync(root + 'node_modules/' + p).toString('base64');
+const display = font('@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2');
+const ui = font('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2');
 
 const html = `<!doctype html><html><head><style>
-@font-face{font-family:M;src:url(data:font/woff2;base64,${marker})}
-@font-face{font-family:K;src:url(data:font/woff2;base64,${kalam})}
-@font-face{font-family:A;src:url(data:font/woff2;base64,${atk})}
-*{box-sizing:border-box}body{margin:0;width:1200px;height:630px;background:#ddd6c8;font-family:A}
-.b{position:absolute;inset:24px;border:18px solid transparent;border-image:linear-gradient(90deg,#b9bcc0,#eceef1 40%,#a7abb0) 1;
- background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.8) 48%,transparent 62%),radial-gradient(ellipse at 20% 10%,#fff,#fbfaf6 60%);
- box-shadow:0 14px 30px rgba(60,45,20,.25);padding:56px 70px;color:#1f2328;overflow:hidden}
-.g{position:absolute;font-family:M;font-size:44px;color:rgba(31,35,40,.06);white-space:nowrap}
-h1{font-family:M;font-weight:400;font-size:92px;line-height:1;margin:0}
-svg{display:block;width:620px;height:22px;margin:10px 0 18px}
-.r{font-family:M;font-size:46px;color:#c22f2a;margin:0 0 26px}
-.l{font-family:K;font-size:32px;margin:0;color:#4a4f57}
-.s{position:absolute;right:70px;bottom:62px;background:#ffe57f;padding:22px 30px;font-family:K;font-size:34px;transform:rotate(-3deg);box-shadow:0 16px 24px -10px rgba(60,40,0,.45)}
-.s:before{content:'';position:absolute;top:-12px;left:50%;width:90px;height:24px;transform:translateX(-50%) rotate(-3deg);background:rgba(255,255,255,.65)}
-.t{position:absolute;left:0;right:0;bottom:0;height:20px;background:linear-gradient(#c9ccd0,#9da1a6)}
-.k{position:absolute;bottom:6px;width:80px;height:12px;border-radius:3px 6px 6px 3px}
-</style></head><body><div class="b">
-<span class="g" style="top:40px;left:760px;transform:rotate(-6deg)">woof water??</span>
-<span class="g" style="top:455px;left:380px;transform:rotate(-3deg)">idea #31?</span>
-<h1>Hi, I'm Aaron Adams.</h1>
-<svg viewBox="0 0 300 16" preserveAspectRatio="none"><path d="M3 10 C 70 2, 160 14, 297 5" fill="none" stroke="#c22f2a" stroke-width="5" stroke-linecap="round"/></svg>
-<p class="r">I run operations, programs and teams.</p>
-<p class="l">Process · Inventory · Staffing · Fulfillment · Growth</p>
-<p class="l" style="margin-top:8px">Atlanta metro, GA</p>
-<div class="s">hireaaronadams.com</div>
-<div class="t"><span class="k" style="left:40px;background:#2a2d31"></span><span class="k" style="left:134px;background:#c22f2a"></span><span class="k" style="left:228px;background:#1d4fa3"></span></div>
+@font-face{font-family:D;src:url(data:font/woff2;base64,${display});font-weight:100 900}
+@font-face{font-family:U;src:url(data:font/woff2;base64,${ui});font-weight:100 900}
+*{box-sizing:border-box}
+body{margin:0;width:1200px;height:630px;font-family:U;color:#161616;background:#f2f2f0;
+ background-image:radial-gradient(#d6d6d2 1.4px,transparent 1.6px);background-size:26px 26px;position:relative;overflow:hidden}
+.lab{position:absolute;left:64px;top:44px;font-size:18px;color:#6e6e6b}
+.f{position:absolute;left:64px;top:74px;width:1072px;height:500px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 2px 6px rgba(0,0,0,.06);padding:70px 72px}
+h1{font-family:D;font-weight:700;font-size:132px;line-height:.92;letter-spacing:-.045em;margin:0}
+.l{font-family:D;font-weight:500;font-size:46px;letter-spacing:-.02em;color:#4b4b49;margin:26px 0 0}
+.s{position:relative;color:#161616}
+.s i{position:absolute;inset:-4px -8px -2px -9px;border:2.5px solid #ff7a59}
+.s em{position:absolute;width:11px;height:11px;background:#fff;border:2.5px solid #ff7a59}
+.s b{position:absolute;left:-11px;top:-36px;font:600 18px U;color:#2a1208;background:#ff7a59;padding:3px 9px;border-radius:4px 4px 4px 0}
+.m{position:absolute;left:72px;bottom:62px;font-size:24px;color:#4b4b49}
+.t{position:absolute;right:72px;bottom:56px;display:flex;gap:12px}
+.t span{width:70px;height:70px;border-radius:16px}
+.c{position:absolute;right:300px;bottom:120px}
+.c svg{width:26px;height:32px;fill:#0a6bc4;stroke:#fff;stroke-width:1.4}
+.c b{position:absolute;left:20px;top:24px;font:600 18px U;color:#fff;background:#0a6bc4;padding:3px 10px;border-radius:3px 9px 9px 9px}
+</style></head><body>
+<div class="lab">intro</div>
+<div class="f">
+<h1>Aaron Adams</h1>
+<p class="l">I run <span class="s">operations,<i></i><em style="left:-15px;top:-10px"></em><em style="right:-14px;top:-10px"></em><em style="left:-15px;bottom:-8px"></em><em style="right:-14px;bottom:-8px"></em><b>Aaron</b></span> programs and teams.</p>
+<p class="m">Atlanta metro, GA · hireaaronadams.com</p>
+<div class="t"><span style="background:#c6f36b"></span><span style="background:#ff7a59;border-radius:16px 16px 16px 40px"></span><span style="background:#8fd3ff;border-radius:40px 40px 16px 16px"></span><span style="background:#b18cff"></span></div>
+<div class="c"><svg viewBox="0 0 16 20"><path d="M1 1l13.5 9.2-6.3 1.1-3.3 6.2z"/></svg><b>You</b></div>
 </div></body></html>`;
 
 const browser = await chromium.launch();

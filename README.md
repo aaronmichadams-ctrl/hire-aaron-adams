@@ -1,12 +1,12 @@
 # hireaaronadams.com
 
-Personal hiring site for Aaron Adams. A whiteboard that writes out the basics, then draws in experience and results as you scroll. Built with Astro (static output), deployed on Vercel.
+Personal hiring site for Aaron Adams. Designed like a file in a design tool: a dotted canvas with named frames, a properties panel of quick facts, a project timeline of every job, sticky notes and a comment thread. Built with Astro (static output), deployed on Vercel.
 
 ## Pages
 
 | Path | What it is |
 | --- | --- |
-| `/` | The whiteboard. The "My boss is walking by" switch in the header swaps it for the plain resume. |
+| `/` | The portfolio. Printing it prints the plain resume instead. |
 | `/resume` | The plain, print-ready resume. Same content. Good for printing or pasting into an ATS. |
 | `/AaronAdamsResume2026.pdf` | The downloadable PDF. Replace `public/AaronAdamsResume2026.pdf` to update it. |
 
@@ -88,12 +88,12 @@ If the current site is on a builder like Wix or Squarespace, disconnect the doma
 
 ```
 src/data/aaron.ts            all copy and facts
-src/pages/index.astro        the whiteboard
+src/pages/index.astro        the portfolio (canvas, frames, timeline)
 src/pages/resume.astro       plain resume page
-src/pages/404.astro          "someone erased this part of the board"
-src/components/ResumeView.astro  the plain resume, shared by boring mode and /resume
-src/layouts/Base.astro       head, SEO, Open Graph, header, boring-mode switch
-src/styles/global.css        header, boring mode, resume and print styles
+src/pages/404.astro          "this frame got deleted"
+src/components/ResumeView.astro  the plain resume: /resume and the print version of /
+src/layouts/Base.astro       head, SEO, Open Graph, the file bar header
+src/styles/global.css        color tokens, file bar, resume and print styles
 scripts/make-og.mjs          renders public/og.png
 scripts/lint-copy.mjs        em dash check
 DECISIONS.md                 why it looks the way it does

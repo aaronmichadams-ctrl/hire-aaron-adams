@@ -1,16 +1,18 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base title="Erased · Aaron Adams" description="This page is not on the board." noindex>
-  <div class="fun nf">
-    <h1 class="nf-h">Someone erased this part of the board.</h1>
+<Base file="Missing frame" title="Not found · Aaron Adams" description="This page doesn't exist." noindex>
+  <div class="nf">
+    <p class="nf-label">404</p>
+    <h1>This frame got deleted.</h1>
     <p>The page you wanted isn't here. Everything else is.</p>
-    <p><a href="/">Back to the board</a> · <a href="/resume">Plain resume</a></p>
+    <p class="nf-links"><a href="/">Back to the portfolio</a><a href="/resume">Plain-text resume</a></p>
   </div>
-  <div class="boring"><p>Page not found. <a href="/">Home</a> · <a href="/resume">Resume</a></p></div>
 </Base>
 <style>
-  .nf { min-height: 60vh; display: grid; align-content: center; gap: .5rem; }
-  .nf-h { font-family: 'Permanent Marker', cursive; font-weight: 400; font-size: clamp(2rem, 7vw, 3.5rem); line-height: 1.1; margin: 0; }
-  .nf a { color: #1d4fa3; font-weight: 700; }
+  .nf { max-width: 40rem; margin: 0 auto; padding: 18vh 1.25rem; }
+  .nf-label { font-size: .8rem; color: var(--ink-3); margin: 0; }
+  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 7vw, 3.5rem); letter-spacing: -.04em; line-height: 1; margin: .5rem 0 1rem; }
+  .nf-links { display: flex; gap: 1.25rem; }
+  .nf-links a { color: var(--select-ink); font-weight: 600; }
 </style>

@@ -4,11 +4,9 @@ import ResumeView from '../components/ResumeView.astro';
 import { person } from '../data/aaron';
 ---
 <Base
-  boringPage
+  file="Resume"
   title={`${person.name} · Resume`}
   description={`Resume for ${person.name}. ${person.role}, ${person.location}.`}
 >
-  <div class="boring">
-    <ResumeView headingLevel={1} />
-  </div>
+  <ResumeView headingLevel={1} />
 </Base>

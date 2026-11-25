@@ -1,25 +1,22 @@
 ---
 import { person, seo } from '../data/aaron';
-import '@fontsource/permanent-marker';
-import '@fontsource/kalam/400.css';
-import '@fontsource/kalam/700.css';
-import '@fontsource/atkinson-hyperlegible';
-import '@fontsource/atkinson-hyperlegible/700.css';
+import '@fontsource-variable/instrument-sans';
+import '@fontsource-variable/inter';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
-  /** When true, this page IS the boring view (e.g. /resume). */
-  boringPage?: boolean;
+  /** Text after the name in the file bar, e.g. "Portfolio" or "Resume". */
+  file?: string;
   noindex?: boolean;
 }
-const { title = seo.title, description = seo.description, boringPage = false, noindex = false } = Astro.props;
+const { title = seo.title, description = seo.description, file = 'Portfolio 2026', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 const ogImage = new URL('/og.png', Astro.site).toString();
 ---
 <!doctype html>
-<html lang="en" data-boring={boringPage ? 'true' : undefined} data-boring-page={boringPage ? 'true' : undefined}>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -27,7 +24,7 @@ const ogImage = new URL('/og.png', Astro.site).toString();
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex" />}
-    <meta name="theme-color" content="#fbfaf6" />
+    <meta name="theme-color" content="#ffffff" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
     <meta property="og:type" content="profile" />
@@ -38,7 +35,7 @@ const ogImage = new URL('/og.png', Astro.site).toString();
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="A whiteboard with Hi, I'm Aaron Adams written in black marker and I run operations, programs and teams in red." />
+    <meta property="og:image:alt" content="Aaron Adams. I run operations, programs and teams. Atlanta metro, GA." />
     <meta name="twitter:card" content="summary_large_image" />
 
     <script type="application/ld+json" set:html={JSON.stringify({
@@ -49,66 +46,27 @@ const ogImage = new URL('/og.png', Astro.site).toString();
       email: `mailto:${person.email}`,
       telephone: person.phone,
       url: person.url,
+      sameAs: [person.linkedin],
       address: { '@type': 'PostalAddress', addressLocality: 'Atlanta', addressRegion: 'GA', addressCountry: 'US' },
     })} />
-
-    <!-- Apply boring mode before first paint so there is no flash. -->
-    <script is:inline>
-      try {
-        if (!document.documentElement.dataset.boringPage && localStorage.getItem('boring') === '1') {
-          document.documentElement.dataset.boring = 'true';
-        }
-      } catch (e) {}
-    </script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header class="site-header">
-      <a class="brand" href="/">{person.name}</a>
-      <nav class="header-actions" aria-label="Quick actions">
-        <a
-          class="boring-toggle"
-          href={boringPage ? '/' : '/resume'}
-          data-boring-toggle
-          aria-label="Boring mode: plain resume layout"
-        >
-          <span class="bt-track" aria-hidden="true"><span class="bt-knob"></span></span>
-          <span class="bt-label">My boss is walking by</span>
-        </a>
-        <a class="btn-resume" href={person.resumePdf} download>Download resume <span class="r-muted">(PDF)</span></a>
+    <header class="bar">
+      <a class="bar-file" href="/">
+        <span class="bar-mark" aria-hidden="true"></span>
+        <span class="bar-name">{person.name}</span>
+        <span class="bar-sep" aria-hidden="true">/</span>
+        <span class="bar-doc">{file}</span>
+      </a>
+      <nav class="bar-actions" aria-label="Quick actions">
+        <a class="bar-link" href={person.linkedin} rel="noopener">LinkedIn</a>
+        <a class="bar-link hide-sm" href={`mailto:${person.email}`}>Email</a>
+        <a class="bar-cta" href={person.resumePdf} download>Download resume</a>
       </nav>
     </header>
     <main id="main" tabindex="-1">
       <slot />
     </main>
-
-    <script>
-      // Boring mode switch. Without JS it is a plain link to /resume, which is the same view.
-      const root = document.documentElement;
-      const isBoringPage = root.dataset.boringPage === 'true';
-      document.querySelectorAll<HTMLAnchorElement>('[data-boring-toggle]').forEach((el) => {
-        const sync = () => el.setAttribute('aria-checked', root.dataset.boring === 'true' ? 'true' : 'false');
-        el.setAttribute('role', 'switch');
-        sync();
-        el.addEventListener('click', (e) => {
-          if (isBoringPage) {
-            try { localStorage.setItem('boring', '0'); } catch (err) {}
-            return; // follow the link home, in fun mode
-          }
-          e.preventDefault();
-          const on = root.dataset.boring !== 'true';
-          if (on) root.dataset.boring = 'true';
-          else delete root.dataset.boring;
-          try { localStorage.setItem('boring', on ? '1' : '0'); } catch (err) {}
-          sync();
-          window.scrollTo({ top: 0 });
-          document.getElementById('main')?.focus({ preventScroll: true });
-        });
-        // Keyboard: role=switch should toggle on Space as well as Enter.
-        el.addEventListener('keydown', (e) => {
-          if (e.key === ' ') { e.preventDefault(); el.click(); }
-        });
-      });
-    </script>
   </body>
 </html>

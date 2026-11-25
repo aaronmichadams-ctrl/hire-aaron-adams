@@ -24,6 +24,11 @@ export type Job = {
   org: string;
   title: string;
   dates: string;
+  /** For the timeline: 'YYYY-MM'. end omitted = current. */
+  start: string;
+  end?: string;
+  /** One line for the timeline row */
+  summary: string;
   ran: string[];
 };
 
@@ -74,9 +79,9 @@ export const board = {
   startedIntro:
     "I've been starting things since middle school. Some worked, some taught me more by not working.",
   howHeading: 'How I work',
-  contactHeading: "Let's talk.",
+  contactHeading: 'Say hi.',
   contactIntro: 'Hiring for operations, programs or growth? I would love to hear what your team is working on.',
-  signoff: "Leave me a note. I'll follow up before the marker dries.",
+  signoff: "Leave a comment. I'll reply before you close the tab.",
 };
 
 export const results: Result[] = [
@@ -113,6 +118,8 @@ export const jobs: Job[] = [
     org: 'NXT',
     title: 'Founder & Operator',
     dates: 'Aug 2023 to present',
+    start: '2023-08',
+    summary: 'Started it, built the whole operation, profitable in year one.',
     ran: [
       'Started a youth sports services company with only an idea and made it profitable in year one.',
       'Built the whole NXT operation: partnerships, staffing, training, logistics (housing, food and equipment), supply chain and marketing.',
@@ -130,6 +137,9 @@ export const jobs: Job[] = [
     org: 'Atlanta United FC',
     title: 'Program & Operations Specialist',
     dates: 'Jan 2024 to Jun 2025',
+    start: '2024-01',
+    end: '2025-06',
+    summary: 'Day-to-day school, logistics and travel for a pro club program.',
     ran: [
       'Ran daily school and logistics for 20+ program members with a partner private international school.',
       'Kept scheduling, attendance and compliance records accurate for in-person and remote programming at once.',
@@ -142,6 +152,9 @@ export const jobs: Job[] = [
     org: 'WinShape Camps',
     title: 'Operations & Logistics Assistant',
     dates: 'Summer 2023',
+    start: '2023-06',
+    end: '2023-08',
+    summary: 'Programming and logistics for 1,100+ participants.',
     ran: [
       'Planned and ran programming and daily logistics for 1,100+ participants.',
       'Kept track of 125,000+ items of inventory across programs running at the same time.',
@@ -153,6 +166,9 @@ export const jobs: Job[] = [
     org: 'Copper Coin Coffee',
     title: 'Kitchen Supervisor',
     dates: 'Sep 2021 to Sep 2022',
+    start: '2021-09',
+    end: '2022-09',
+    summary: 'Led a team of 10+ and rebuilt the kitchen systems.',
     ran: [
       'Led a team of 10+ in a high-volume coffee shop and handled vendor purchasing for the kitchen and front of house.',
       'Rebuilt the kitchen layout and the ordering and inventory systems to make daily service go faster.',
@@ -163,6 +179,9 @@ export const jobs: Job[] = [
     org: 'Chick-fil-A',
     title: 'Kitchen Manager',
     dates: 'Aug 2020 to Jun 2022',
+    start: '2020-08',
+    end: '2022-06',
+    summary: 'Ran a high-volume kitchen and a team of 10+.',
     ran: [
       'Ran daily operations and a team of 10+ in a high-volume kitchen with a customer-first standard.',
       'Changed the process to get more orders out.',
@@ -176,6 +195,9 @@ export const jobs: Job[] = [
     // Aaron: not a venture of his, and he did not rebuild the packing system.
     title: 'Warehouse & Fulfillment Supervisor',
     dates: 'Aug 2018 to Mar 2023',
+    start: '2018-08',
+    end: '2023-03',
+    summary: 'Fulfillment for hundreds of orders a day.',
     ran: [
       'Ran fulfillment for hundreds of orders a day.',
       'Handled scheduling and payroll for the warehouse staff.',
