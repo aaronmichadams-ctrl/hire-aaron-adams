@@ -26,7 +26,7 @@ A running log. Every rule broken on purpose gets an entry: the rule, how it was 
 
 ## Inspiration from weird places
 
-- **Whiteboard ghosting.** When a whiteboard is wiped, faint traces of old writing stay behind. The board shows ghosts of earlier ventures ("woof water??", "soap + fragrance v2", "clothing drop, fri") behind the real content. It is the "make 50 things, throw away 47" idea, shown without a word of explanation.
+- **Whiteboard ghosting.** When a whiteboard is wiped, faint traces of old writing stay behind. The board shows ghosts of old notes ("woof water??", "idea #31?", "call back thurs") behind the real content, so it reads as a board that has actually been worked on.
 - **The marker tray.** The aluminum ledge with three markers and an eraser at the bottom of the first board is what makes it read as a whiteboard rather than a white box.
 
 ## Step log
@@ -46,3 +46,11 @@ A running log. Every rule broken on purpose gets an entry: the rule, how it was 
 - **40th tab:** everything in the 10-second test is on the first phone screen before the write-on finishes, and the resume button is in the sticky header the whole time. The marker font is only for headings and short labels; anything you actually read is in Atkinson Hyperlegible, a typeface designed for legibility. Nothing is ever hidden behind an animation for someone with reduced motion or no JavaScript: the board is simply already full.
 - **Checks run:** Lighthouse (mobile) 100 performance, 100 accessibility, 100 best practices, 100 SEO on `/`; 100s on `/resume`. Keyboard: skip link, header, every link and disclosure reachable with visible focus; the boring switch works with Space and Enter. Boring mode persists across reloads. Print: 2 pages from `/` and `/resume`. 375px: no horizontal scroll on any page. Copy: `npm run build` fails on any em dash.
 - **Performance decision:** CSS is inlined into each page (`inlineStylesheets: 'always'`) so the first paint does not wait on a stylesheet request. Fonts are self-hosted, no third-party requests.
+
+### Revision: Aaron's content pass (Nov 2026)
+- **New source:** a newer resume PDF (now the download) settled the open conflicts: B.S. degree, NXT profitable in year one, Chick-fil-A "youngest member of the kitchen leadership team," My Audio Pet as Warehouse & Fulfillment Supervisor, and updated Atlanta United numbers (20+ members, 40+ for food service).
+- **Corrections from Aaron:** he did not start My Audio Pet and did not rebuild its packing system; both claims are gone. NXT now describes the whole operation he built: partnerships, staffing, training, logistics (housing, food, equipment), supply chain and marketing.
+- **Less borrowed philosophy:** "How I work" no longer quotes the build manifesto. It now uses Aaron's own line from his resume ("I move fast, I track everything, and I follow up until the next step is on the calendar"), each backed by a real result. The "make 50 things" motto is gone.
+- **Things I've started:** cut to Woof Water, NXT Soccer and Rentmobili (current work). Lessons are optional and left out rather than guessed.
+- **Numbers:** the "How" disclosures were removed; they read awkwardly under a circled number. Each number keeps one plain sentence and where it happened.
+- **40th tab:** fewer, truer cards. Nothing on the page needs a footnote anymore.

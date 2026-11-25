@@ -23,8 +23,8 @@ const isTodo = (s: string) => s.startsWith('TODO(aaron)');
     <section class="board hero" aria-labelledby="wb-hello">
       <div class="ghost" aria-hidden="true">
         <span style="top:8%;left:62%;--rot:-6deg">woof water??</span>
-        <span style="top:58%;left:70%;--rot:4deg">soap + fragrance v2</span>
-        <span style="top:78%;left:8%;--rot:-3deg">clothing drop, fri</span>
+        <span style="top:58%;left:70%;--rot:4deg">idea #31?</span>
+        <span style="top:78%;left:8%;--rot:-3deg">call back thurs</span>
       </div>
 
       <h1 id="wb-hello" class="mk mk-xl write" style="--d:.1s">{wb.hello}</h1>
@@ -105,10 +105,6 @@ const isTodo = (s: string) => s.startsWith('TODO(aaron)');
             </span>
             <span class="num-label">{r.plain}</span>
             <span class="num-where hand">at {shortWhere(r.where)}</span>
-            <details class="num-how">
-              <summary>How<span class="sr-only"> I got {r.figure}</span></summary>
-              <ul>{r.how.map((h) => <li class={isTodo(h) ? 'todo' : ''}>{h}</li>)}</ul>
-            </details>
           </li>
         ))}
       </ul>
@@ -141,12 +137,11 @@ const isTodo = (s: string) => s.startsWith('TODO(aaron)');
     <!-- ================= THINGS I'VE STARTED ================= -->
     <section class="board started" aria-labelledby="wb-started" data-draw>
       <div class="ghost" aria-hidden="true">
-        <span style="top:12%;left:58%;--rot:5deg">idea #31?</span>
+        <span style="top:12%;left:58%;--rot:5deg">v2??</span>
         <span style="top:70%;left:4%;--rot:-4deg">pricing??</span>
         <span style="top:86%;left:60%;--rot:2deg">try again monday</span>
       </div>
       <h2 id="wb-started" class="mk mk-h write">{wb.startedHeading}</h2>
-      <p class="motto hand write-fade" style="--d:.4s">{wb.startedMotto}</p>
       <p class="intro write-fade" style="--d:.6s">{wb.startedIntro}</p>
       <ul class="ventures">
         {ventures.map((v, i) => (
@@ -155,8 +150,9 @@ const isTodo = (s: string) => s.startsWith('TODO(aaron)');
             <p class="v-when hand">{v.when}</p>
             <h3 class="mk mk-s">{v.name}</h3>
             <p class={isTodo(v.pitch) ? 'todo' : ''}>{v.pitch}</p>
-            <p class={isTodo(v.happened) ? 'todo' : ''}><strong>What happened:</strong> {v.happened}</p>
-            <p class={isTodo(v.taught) ? 'todo' : ''}><strong>What it taught me:</strong> {v.taught}</p>
+            <p>{v.happened}</p>
+            {v.taught && <p><strong>What it taught me:</strong> {v.taught}</p>}
+            {v.url && <p><a class="v-link" href={v.url} rel="noopener">{v.url.replace('https://', '')}<span class="sr-only"> (opens {v.name})</span></a></p>}
             <span class="v-status hand">{v.status}</span>
           </li>
         ))}
@@ -317,7 +313,9 @@ const isTodo = (s: string) => s.startsWith('TODO(aaron)');
   }
 
   /* ---------- numbers ---------- */
-  .numbers { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 2rem 2rem; }
+  .numbers { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: 1fr; gap: 2rem; }
+  @media (min-width: 640px) { .numbers { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1100px) { .numbers { grid-template-columns: repeat(4, 1fr); gap: 2rem 1.5rem; } }
   .numbers li { display: flex; flex-direction: column; align-items: flex-start; gap: .35rem; }
   .num-wrap { position: relative; display: inline-block; padding: .6rem 1.4rem .5rem 1.1rem; }
   .num { font-size: clamp(2.3rem, 7vw, 3.2rem); line-height: 1; color: var(--red); }
@@ -326,9 +324,6 @@ const isTodo = (s: string) => s.startsWith('TODO(aaron)');
   .ring path { stroke: var(--ink); stroke-width: 2.5; }
   .num-label { font-weight: 700; }
   .num-where { color: var(--muted); font-size: 1.1rem; }
-  .num-how { font-size: .95rem; }
-  .num-how summary { cursor: pointer; font-family: 'Kalam', cursive; font-weight: 700; font-size: 1.05rem; min-height: 44px; display: flex; align-items: center; }
-  .num-how ul { margin: 0; padding-left: 1.1rem; }
 
   /* ---------- flow of jobs ---------- */
   .flow { list-style: none; padding: 0; margin: 0; display: grid; gap: 2.75rem; }
@@ -355,14 +350,17 @@ const isTodo = (s: string) => s.startsWith('TODO(aaron)');
 
   /* ---------- things I've started ---------- */
   .motto { font-size: clamp(1.4rem, 4vw, 1.9rem); color: var(--red); margin: -.75rem 0 .25rem; }
-  .intro { max-width: 40rem; margin: 0 0 1.75rem; }
+  .intro { max-width: 40rem; margin: -.5rem 0 1.75rem; }
   .ventures { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr)); gap: 1.5rem; }
-  .venture { position: relative; padding: 1.25rem 1.25rem 2.75rem; font-size: 1rem; }
+  .venture { position: relative; padding: 1.25rem 1.25rem 1.25rem; font-size: 1rem; display: flex; flex-direction: column; }
   .venture p { margin: 0 0 .5rem; }
   .v-when { color: var(--muted); margin: 0 !important; }
-  .v-status { position: absolute; right: 1rem; bottom: .8rem; font-weight: 700; font-size: 1.1rem; padding: 0 .5rem; border: 2.5px solid currentColor; border-radius: 999px; transform: rotate(-4deg); }
+  .v-status { align-self: flex-start; margin-top: auto; font-weight: 700; font-size: 1.1rem; padding: 0 .5rem; border: 2.5px solid currentColor; border-radius: 999px; transform: rotate(-4deg); }
   .status-still-running .v-status { color: var(--green); }
   .status-retired .v-status { color: var(--muted); }
+  .status-in-progress .v-status { color: var(--blue); }
+  .status-in-progress .box path { stroke: var(--blue); stroke-width: 4; }
+  .v-link { color: var(--blue); font-weight: 700; text-underline-offset: 3px; }
   .status-still-running .box path { stroke: var(--green); stroke-width: 4; }
 
   /* ---------- how I work ---------- */

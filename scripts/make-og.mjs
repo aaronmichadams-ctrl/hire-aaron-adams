@@ -30,7 +30,7 @@ svg{display:block;width:620px;height:22px;margin:10px 0 18px}
 .k{position:absolute;bottom:6px;width:80px;height:12px;border-radius:3px 6px 6px 3px}
 </style></head><body><div class="b">
 <span class="g" style="top:40px;left:760px;transform:rotate(-6deg)">woof water??</span>
-<span class="g" style="top:455px;left:380px;transform:rotate(-3deg)">soap + fragrance v2</span>
+<span class="g" style="top:455px;left:380px;transform:rotate(-3deg)">idea #31?</span>
 <h1>Hi, I'm Aaron Adams.</h1>
 <svg viewBox="0 0 300 16" preserveAspectRatio="none"><path d="M3 10 C 70 2, 160 14, 297 5" fill="none" stroke="#c22f2a" stroke-width="5" stroke-linecap="round"/></svg>
 <p class="r">I run operations, programs and teams.</p>
