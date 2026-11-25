@@ -1,6 +1,34 @@
 # Decisions
 
-> **Current design: the canvas (Nov 2026).** Entries further down describe earlier versions (the whiteboard, and the kitchen ideas before it) and are kept as history.
+> **Current design: the player profile (Nov 2026).** Everything below the profile section describes earlier versions (the canvas, the whiteboard, and the kitchen ideas before them) and is kept as history.
+
+## The player profile
+
+**Aaron's brief:** not Figma. He picked from three options modeled on rentmobili.com, fotmob.com and human-md.ai, and chose the FotMob route: "List my potential jobs as positions. List my job history in the former clubs section."
+
+**What it borrows from a football player page:**
+- **Profile band:** a red band with an "AA" badge, his name, and "Operations · Sales · Marketing · Programs". Download resume sits where a player page puts Follow.
+- **Attribute grid:** the height-and-shirt-number grid becomes Atlanta, years of experience, roles held, Founder of NXT, his degree, and Spanish.
+- **Position:** the roles he's open to are listed like a player's positions. Primary is Operations; the others are Sales, Marketing, Programs, Partnerships and General management. They're also drawn as chips on a pitch, like a formation, and are edited in `positions` in `src/data/aaron.ts`.
+- **Career:** a "Current club" (NXT) and "Former clubs" list with a round crest per organization. Each one opens up to show what he ran there. This is the one place the job history lives on the page.
+- **Career highlights:** the season-stats row becomes his four real results.
+- **Things I've started:** sits where a player page lists trophies.
+
+**What it deliberately leaves out:** player pages are full of ratings, percentages and radar charts. There are no real numbers for any of that, so none of it is invented. Every figure on the page is a real result.
+
+**Conventions broken on purpose:**
+1. **The hero headline:** replaced by a profile card. *Why:* a recruiter gets name, target roles, location, years of experience and a resume button in one glance, the way a scout reads a player card.
+2. **The timeline:** replaced by current club and former clubs. *Why:* it's instantly familiar to anyone who has looked up a player. It reads newest first and keeps details one tap away instead of a wall of bullets.
+3. **The skills list:** replaced by positions on a pitch. *Why:* it tells a recruiter which seats he can play, not just which keywords he knows. Operations is primary, and the rest are clearly secondary.
+
+**40th tab:** on a phone, the first screen shows the name, target roles, Download resume, location and experience. On phones the Career card comes straight after the highlights. Nothing animates.
+
+**Checks:**
+- Lighthouse (mobile): 100 performance, 100 accessibility, 100 best practices, 100 SEO on `/` and `/resume`.
+- Clubs open with Enter, focus is visible, and no page scrolls sideways at 375px or 390px.
+- Printing `/` gives the plain resume, 2 pages.
+
+**Removed:** the canvas design, its fonts, and the three lab options. They are all in git history.
 
 ## The canvas redesign
 

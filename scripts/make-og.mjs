@@ -6,39 +6,29 @@ import { fileURLToPath } from 'node:url';
 const require = createRequire(import.meta.url);
 const { chromium } = require('playwright');
 const root = fileURLToPath(new URL('..', import.meta.url));
-const font = (p) => readFileSync(root + 'node_modules/' + p).toString('base64');
-const display = font('@fontsource-variable/instrument-sans/files/instrument-sans-latin-wght-normal.woff2');
-const ui = font('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2');
+const dm = readFileSync(root + 'node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2').toString('base64');
 
+const chip = (t, x, y, main) => `<b style="left:${x}%;top:${y}%;${main ? 'background:#b8231b;font-size:20px;padding:5px 14px' : ''}">${t}</b>`;
 const html = `<!doctype html><html><head><style>
-@font-face{font-family:D;src:url(data:font/woff2;base64,${display});font-weight:100 900}
-@font-face{font-family:U;src:url(data:font/woff2;base64,${ui});font-weight:100 900}
-*{box-sizing:border-box}
-body{margin:0;width:1200px;height:630px;font-family:U;color:#161616;background:#f2f2f0;
- background-image:radial-gradient(#d6d6d2 1.4px,transparent 1.6px);background-size:26px 26px;position:relative;overflow:hidden}
-.lab{position:absolute;left:64px;top:44px;font-size:18px;color:#6e6e6b}
-.f{position:absolute;left:64px;top:74px;width:1072px;height:500px;background:#fff;box-shadow:0 0 0 1px rgba(0,0,0,.05),0 2px 6px rgba(0,0,0,.06);padding:70px 72px}
-h1{font-family:D;font-weight:700;font-size:132px;line-height:.92;letter-spacing:-.045em;margin:0}
-.l{font-family:D;font-weight:500;font-size:46px;letter-spacing:-.02em;color:#4b4b49;margin:26px 0 0}
-.s{position:relative;color:#161616}
-.s i{position:absolute;inset:-4px -8px -2px -9px;border:2.5px solid #ff7a59}
-.s em{position:absolute;width:11px;height:11px;background:#fff;border:2.5px solid #ff7a59}
-.s b{position:absolute;left:-11px;top:-36px;font:600 18px U;color:#2a1208;background:#ff7a59;padding:3px 9px;border-radius:4px 4px 4px 0}
-.m{position:absolute;left:72px;bottom:62px;font-size:24px;color:#4b4b49}
-.t{position:absolute;right:72px;bottom:56px;display:flex;gap:12px}
-.t span{width:70px;height:70px;border-radius:16px}
-.c{position:absolute;right:300px;bottom:120px}
-.c svg{width:26px;height:32px;fill:#0a6bc4;stroke:#fff;stroke-width:1.4}
-.c b{position:absolute;left:20px;top:24px;font:600 18px U;color:#fff;background:#0a6bc4;padding:3px 10px;border-radius:3px 9px 9px 9px}
-</style></head><body>
-<div class="lab">intro</div>
-<div class="f">
-<h1>Aaron Adams</h1>
-<p class="l">I run <span class="s">operations,<i></i><em style="left:-15px;top:-10px"></em><em style="right:-14px;top:-10px"></em><em style="left:-15px;bottom:-8px"></em><em style="right:-14px;bottom:-8px"></em><b>Aaron</b></span> programs and teams.</p>
-<p class="m">Atlanta metro, GA · hireaaronadams.com</p>
-<div class="t"><span style="background:#c6f36b"></span><span style="background:#ff7a59;border-radius:16px 16px 16px 40px"></span><span style="background:#8fd3ff;border-radius:40px 40px 16px 16px"></span><span style="background:#b18cff"></span></div>
-<div class="c"><svg viewBox="0 0 16 20"><path d="M1 1l13.5 9.2-6.3 1.1-3.3 6.2z"/></svg><b>You</b></div>
-</div></body></html>`;
+@font-face{font-family:D;src:url(data:font/woff2;base64,${dm});font-weight:100 1000}
+*{box-sizing:border-box}body{margin:0;width:1200px;height:630px;background:#fafafa;font-family:D;color:#111;padding:48px}
+.c{height:534px;background:#fff;border:2px solid #ececec;border-radius:28px;overflow:hidden;display:grid;grid-template-rows:auto 1fr}
+.band{background:#b8231b;color:#fff;display:flex;align-items:center;gap:30px;padding:40px 48px}
+.av{width:120px;height:120px;border-radius:50%;background:#fff;color:#b8231b;display:grid;place-items:center;font-weight:800;font-size:44px;letter-spacing:-1px}
+h1{margin:0;font-size:68px;font-weight:600;line-height:1}
+.band p{margin:10px 0 0;font-size:30px}
+.body{display:grid;grid-template-columns:1fr 1fr 250px;gap:0 36px;padding:34px 48px}
+dt{font-size:34px}dd{margin:4px 0 22px;color:#6b6b6b;font-size:22px}
+.p{position:relative;background:#f2f2f2;border-radius:10px;height:228px}
+.p b{position:absolute;transform:translate(-50%,-50%);background:#6b6b6b;color:#fff;font-size:16px;padding:4px 11px;border-radius:999px}
+.p i{position:absolute;left:0;right:0;top:50%;border-top:3px solid #fff}
+</style></head><body><div class="c">
+<div class="band"><div class="av">AA</div><div><h1>Aaron Adams</h1><p>Operations · Sales · Marketing · Programs</p></div></div>
+<div class="body">
+<dl style="margin:0"><dt>Atlanta, GA</dt><dd>Based in</dd><dt>Founder</dt><dd>NXT, 2023 to now</dd></dl>
+<dl style="margin:0"><dt>+110%</dt><dd>Enrollment in one week</dd><dt>125,000+</dt><dd>Inventory items tracked</dd></dl>
+<div class="p"><i></i>${chip('SAL',27,20)}${chip('MKT',73,20)}${chip('OPS',50,44,true)}${chip('PRG',24,66)}${chip('PTN',76,66)}${chip('GM',50,85)}</div>
+</div></div></body></html>`;
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });

@@ -298,7 +298,22 @@ export const education = {
 };
 
 export const seo = {
-  title: 'Aaron Adams · Operations, programs and teams · Atlanta',
+  title: 'Aaron Adams · Operations, sales, marketing and programs · Atlanta',
   description:
-    'Aaron Adams runs operations, programs and teams: process design, inventory and supply chain, hiring and staffing, fulfillment and growth. Based in the Atlanta metro.',
+    'Aaron Adams: operations, sales, marketing and programs. Founder of NXT. Process, inventory, staffing, fulfillment and growth. Based in the Atlanta metro.',
+};
+
+/**
+ * Roles Aaron is open to, shown like positions on a player profile.
+ * x/y place each chip on the pitch diagram (percent from left/top).
+ */
+export const positions = {
+  primary: { code: 'OPS', name: 'Operations', x: 50, y: 44 },
+  others: [
+    { code: 'SAL', name: 'Sales', x: 27, y: 20 },
+    { code: 'MKT', name: 'Marketing', x: 73, y: 20 },
+    { code: 'PRG', name: 'Programs', x: 24, y: 64 },
+    { code: 'PTN', name: 'Partnerships', x: 76, y: 64 },
+    { code: 'GM', name: 'General management', x: 50, y: 82 },
+  ],
 };

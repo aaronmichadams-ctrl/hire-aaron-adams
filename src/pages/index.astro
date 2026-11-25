@@ -1,207 +1,164 @@
 ---
 /**
- * The canvas. Borrowed from the way design tools look: a dotted canvas,
- * named frames, a properties panel, collaborators' cursors and selections,
- * sticky notes and comment threads. All words come from src/data/aaron.ts.
+ * The profile page. Laid out like a football player profile: a colored band,
+ * an attribute grid, positions on a pitch, highlights, strengths, and a career
+ * list with the current club and former clubs. All words come from src/data/aaron.ts.
  */
 import Base from '../layouts/Base.astro';
 import ResumeView from '../components/ResumeView.astro';
-import { person, board, skills, results, jobs, ventures, principles } from '../data/aaron';
+import { person, results, jobs, skills, ventures, education, principles, positions, board } from '../data/aaron';
 
-// ---------- timeline math ----------
-const toYear = (ym?: string) => {
-  if (!ym) return 2026 + 11 / 12; // current
-  const [y, m] = ym.split('-').map(Number);
-  return y + (m - 1) / 12;
-};
-const T0 = 2018, T1 = 2027;
-const pct = (y: number) => ((y - T0) / (T1 - T0)) * 100;
-const years = Array.from({ length: T1 - T0 }, (_, i) => T0 + i);
-const timeline = [...jobs].sort((a, b) => toYear(a.start) - toYear(b.start));
-const barColors = ['var(--sky)', 'var(--coral)', 'var(--sun)', 'var(--lime)', 'var(--violet)', 'var(--ink)'];
-const tileColors = ['var(--lime)', 'var(--coral)', 'var(--sky)', 'var(--violet)'];
-const stickyColors = ['var(--sun)', 'var(--lime)', 'var(--sky)'];
-const shortOrg = (w: string) => w.split(' · ')[0];
+const initials = (s: string) => s.split(/\s+/).filter((w) => /[A-Za-z]/.test(w[0])).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
+const firstYear = Number(jobs[jobs.length - 1].start.slice(0, 4));
+const yearsIn = 2026 - firstYear;
+const crest: Record<string, string> = { nxt: '#c8102e', atlutd: '#111111', winshape: '#1d6fd8', copper: '#7a4b2a', chickfila: '#d0102f', myaudiopet: '#5b5bd6' };
+const current = jobs.filter((j) => !j.end);
+const former = jobs.filter((j) => j.end);
+const allPositions = [positions.primary, ...positions.others];
 ---
 <Base>
-  <div class="canvas no-print">
-    <!-- ===================== INTRO ===================== -->
-    <section class="frame-wrap" aria-labelledby="intro-h">
-      <p class="frame-label" aria-hidden="true">intro</p>
-      <div class="frame intro">
-        <div class="intro-main">
-          <h1 id="intro-h" class="name">{person.name}</h1>
-          <p class="line">
-            I run
-            <span class="sel">
-              operations,
-              <span class="sel-box" aria-hidden="true"><i></i><i></i><i></i><i></i><b>Aaron</b></span>
-            </span>
-            programs and teams.
-          </p>
-          <p class="lede">{person.positioning}</p>
-          <div class="cta-row">
-            <a class="btn btn-blue" href={person.resumePdf} download>Download resume</a>
-            <a class="btn btn-ghost" href={`mailto:${person.email}`}>Email me</a>
-            <span class="cursor cursor-you" aria-hidden="true">
-              <svg viewBox="0 0 16 20"><path d="M1 1l13.5 9.2-6.3 1.1-3.3 6.2z" /></svg>
-              <b>You</b>
-            </span>
+  <div class="grid no-print">
+    <div class="col-main">
+      <!-- ============ PROFILE ============ -->
+      <section class="card profile o-1" aria-labelledby="name">
+        <div class="band">
+          <span class="avatar" aria-hidden="true">AA</span>
+          <div class="band-txt">
+            <h1 id="name">{person.name}</h1>
+            <p>Operations · Sales · Marketing · Programs</p>
           </div>
+          <a class="follow" href={person.resumePdf} download>Download resume</a>
         </div>
-
-        <aside class="panel" aria-label="Quick facts">
-          <p class="panel-title">Aaron Adams</p>
-          <dl>
-            <div><dt>Based in</dt><dd>{person.location}</dd></div>
-            <div><dt>Open to</dt><dd class="chips"><span>Operations</span><span>Program management</span><span>Growth</span><span>General management</span></dd></div>
-            <div><dt>Right now</dt><dd>Running NXT. Building Mobili.</dd></div>
-            <div><dt>Email</dt><dd><a href={`mailto:${person.email}`}>{person.email}</a></dd></div>
-            <div><dt>Phone</dt><dd><a href={person.phoneHref}>{person.phone}</a></dd></div>
-            <div><dt>LinkedIn</dt><dd><a href={person.linkedin} rel="noopener">aaron-adams96</a></dd></div>
+        <div class="profile-body">
+          <dl class="attrs">
+            <div><dt>{person.location.replace(' metro', '')}</dt><dd>Based in</dd></div>
+            <div><dt>{yearsIn} years</dt><dd>Experience, since {firstYear}</dd></div>
+            <div><dt>{jobs.length}</dt><dd>Roles held</dd></div>
+            <div><dt>Founder</dt><dd>NXT, 2023 to now</dd></div>
+            <div><dt>B.S. {education.year.slice(-4)}</dt><dd>{education.school}</dd></div>
+            <div><dt>Spanish</dt><dd>Studied through level 3</dd></div>
           </dl>
-        </aside>
-      </div>
-    </section>
 
-    <!-- ===================== RESULTS ===================== -->
-    <section class="frame-wrap" aria-labelledby="results-h">
-      <p class="frame-label" aria-hidden="true">results</p>
-      <div class="frame">
-        <h2 id="results-h" class="h2">A few numbers</h2>
-        <ul class="tiles">
-          {results.map((r, i) => (
-            <li class={`tile tile-${i}`} style={`--c:${tileColors[i]}`}>
-              <span class="tile-fig">{r.figure}</span>
-              <span class="tile-cap">{r.plain}</span>
-              <span class="tile-src">{shortOrg(r.where)}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </section>
-
-    <!-- ===================== EXPERIENCE ===================== -->
-    <section class="frame-wrap" aria-labelledby="exp-h">
-      <p class="frame-label" aria-hidden="true">experience</p>
-      <div class="frame">
-        <div class="h2-row">
-          <h2 id="exp-h" class="h2">Where I've worked</h2>
-          <p class="note">2018 to now. Usually more than one thing at a time. Tap a row for details.</p>
-        </div>
-        <div class="gantt">
-          <div class="axis" aria-hidden="true">
-            {years.map((y) => <span style={`left:${pct(y)}%`}>{y}</span>)}
+          <div class="position">
+            <h2 class="pos-h">Position</h2>
+            <div class="pos-list">
+              <p class="pos-k">Primary</p>
+              <p class="pos-v">{positions.primary.name}</p>
+              <p class="pos-k pos-k2">Others</p>
+              <ul class="pos-others">
+                {positions.others.map((p) => <li>{p.name}</li>)}
+              </ul>
+            </div>
+            <div class="pitch" aria-hidden="true">
+              <span class="box box-t"></span><span class="halfway"></span><span class="box box-b"></span>
+              {allPositions.map((p, i) => (
+                <b class={`chip ${i === 0 ? 'chip-main' : ''}`} style={`left:${p.x}%;top:${p.y}%`}>{p.code}</b>
+              ))}
+            </div>
           </div>
-          <ol class="rows">
-            {timeline.map((j, i) => {
-              const a = toYear(j.start), b = toYear(j.end);
-              return (
-                <li class="row">
-                  <details>
-                    <summary>
-                      <span class="row-label">
-                        <strong>{j.org}</strong>
-                        <span>{j.title}</span>
-                        <span class="row-dates">{j.dates}</span>
-                      </span>
-                      <span class="track" aria-hidden="true">
-                        {years.map((y) => <i style={`left:${pct(y)}%`}></i>)}
-                        <span class={`bar ${j.end ? '' : 'bar-now'}`} style={`left:${pct(a)}%;width:${Math.max(pct(b) - pct(a), 1.8)}%;--c:${barColors[i % barColors.length]}`}></span>
-                      </span>
-                    </summary>
-                    <div class="row-body">
-                      <p class="row-summary">{j.summary}</p>
-                      <ul>{j.ran.map((r) => <li>{r}</li>)}</ul>
-                    </div>
-                  </details>
-                </li>
-              );
-            })}
-          </ol>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ===================== WHAT I BRING ===================== -->
-    <section class="frame-wrap" aria-labelledby="bring-h">
-      <p class="frame-label" aria-hidden="true">what I bring</p>
-      <div class="frame">
-        <h2 id="bring-h" class="h2">{board.bringHeading}</h2>
-        <ul class="components">
+      <!-- ============ HIGHLIGHTS ============ -->
+      <section id="highlights" class="card o-2" aria-labelledby="hl-h">
+        <h2 id="hl-h" class="card-h">Career highlights</h2>
+        <ul class="stats">
+          {results.map((r, i) => (
+            <li>
+              <span class={`num ${i === 1 ? 'num-badge' : ''}`}>{r.figure}</span>
+              <span class="lab">{r.plain}</span>
+              <span class="src">{r.where.split(' · ')[0]}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- ============ STRENGTHS ============ -->
+      <section class="card o-4" aria-labelledby="st-h">
+        <h2 id="st-h" class="card-h">Strengths</h2>
+        <ul class="traits">
           {skills.map((s) => (
-            <li class="component">
-              <p class="comp-name"><span class="comp-icon" aria-hidden="true"></span>{s.name}</p>
-              <p class="comp-items">{s.items}.</p>
-              <p class="pin"><span class="avatar" aria-hidden="true">A</span><span><span class="sr-only">For example: </span>{s.proof}</span></p>
+            <li><p class="trait-h">{s.name}</p><p class="muted">{s.items}</p><p class="trait-p">{s.proof}</p></li>
+          ))}
+        </ul>
+      </section>
+
+      <!-- ============ HOW I PLAY ============ -->
+      <section class="card o-6" aria-labelledby="how-h">
+        <h2 id="how-h" class="card-h">How I work</h2>
+        <ol class="how">
+          {principles.map((p, i) => (
+            <li><span class="how-n" aria-hidden="true">{i + 1}</span><div><p class="how-l">{p.line}</p><p class="muted">{p.proof}</p></div></li>
+          ))}
+        </ol>
+      </section>
+    </div>
+
+    <aside class="col-side">
+      <!-- ============ CAREER ============ -->
+      <section id="career" class="card o-3" aria-labelledby="car-h">
+        <h2 id="car-h" class="card-h">Career</h2>
+
+        <h3 class="group">Current club</h3>
+        <ul class="clubs">
+          {current.map((j) => (
+            <li>
+              <details>
+                <summary>
+                  <span class="crest" style={`--c:${crest[j.id]}`} aria-hidden="true">{initials(j.org)}</span>
+                  <span class="club-txt"><strong>{j.org}</strong><span>{j.title}</span><span>{j.dates.replace(' to ', ' - ')}</span></span>
+                  <span class="chev" aria-hidden="true">›</span>
+                </summary>
+                <ul class="club-detail">{j.ran.map((r) => <li>{r}</li>)}</ul>
+              </details>
             </li>
           ))}
         </ul>
-      </div>
-    </section>
 
-    <!-- ===================== STARTED ===================== -->
-    <section class="frame-wrap" aria-labelledby="started-h">
-      <p class="frame-label" aria-hidden="true">things I've started</p>
-      <div class="frame frame-board">
-        <div class="h2-row">
-          <h2 id="started-h" class="h2">{board.startedHeading}</h2>
-          <p class="note">{board.startedIntro}</p>
-        </div>
-        <ul class="stickies">
-          {ventures.map((v, i) => (
-            <li class="sticky" style={`--c:${stickyColors[i % stickyColors.length]};--r:${[-2, 1.5, -1][i % 3]}deg`}>
-              <h3>{v.name}</h3>
-              <p>{v.pitch}</p>
-              <p class="sticky-more">{v.happened}</p>
-              {v.url && <p><a href={v.url} rel="noopener">{v.url.replace('https://www.', '')}<span class="sr-only"> (opens {v.name})</span></a></p>}
-              <p class="sticky-foot"><span>{v.when}</span><span class={`status status-${v.status.replace(' ', '-')}`}>{v.status}</span></p>
+        <h3 class="group">Former clubs</h3>
+        <ul class="clubs">
+          {former.map((j) => (
+            <li>
+              <details>
+                <summary>
+                  <span class="crest" style={`--c:${crest[j.id]}`} aria-hidden="true">{initials(j.org)}</span>
+                  <span class="club-txt"><strong>{j.org}</strong><span>{j.title}</span><span>{j.dates.replace(' to ', ' - ')}</span></span>
+                  <span class="chev" aria-hidden="true">›</span>
+                </summary>
+                <ul class="club-detail">{j.ran.map((r) => <li>{r}</li>)}</ul>
+              </details>
             </li>
           ))}
         </ul>
-      </div>
-    </section>
+        <p class="card-foot"><a href="/resume">Full resume</a><span>Tap a club for details</span></p>
+      </section>
 
-    <!-- ===================== HOW I WORK ===================== -->
-    <section class="frame-wrap" aria-labelledby="how-h">
-      <p class="frame-label" aria-hidden="true">how I work</p>
-      <div class="frame how">
-        <h2 id="how-h" class="h2">{board.howHeading}</h2>
-        <ol class="thread">
-          {principles.map((p) => (
-            <li class="comment">
-              <span class="avatar" aria-hidden="true">A</span>
+      <!-- ============ VENTURES ============ -->
+      <section id="started" class="card o-5" aria-labelledby="v-h">
+        <h2 id="v-h" class="card-h">{board.startedHeading}</h2>
+        <ul class="trophies">
+          {ventures.map((v) => (
+            <li>
+              <span class="t-when">{v.when}</span>
               <div>
-                <p class="c-head"><strong>Aaron Adams</strong></p>
-                <p class="c-line">{p.line}</p>
-                <p class="c-proof">{p.proof}</p>
+                <strong>{v.name}</strong>
+                <p>{v.pitch}</p>
+                {v.url && <a href={v.url} rel="noopener">{v.url.replace('https://www.', '')}</a>}
               </div>
             </li>
           ))}
-        </ol>
-      </div>
-    </section>
-
-    <!-- ===================== CONTACT ===================== -->
-    <section class="frame-wrap" aria-labelledby="contact-h">
-      <p class="frame-label" aria-hidden="true">contact</p>
-      <div class="frame contact">
-        <h2 id="contact-h" class="contact-h">{board.contactHeading}</h2>
-        <p class="contact-intro">{board.contactIntro}</p>
-        <p class="contact-mail"><a href={`mailto:${person.email}`}>{person.email}</a></p>
-        <ul class="contact-list">
-          <li><a href={person.phoneHref}>{person.phone}</a></li>
-          <li><a href={person.linkedin} rel="noopener">LinkedIn</a></li>
-          <li><a href={person.resumePdf} download>Resume (PDF)</a></li>
-          <li><a href="/resume">Plain-text resume</a></li>
         </ul>
-        <p class="signoff">{board.signoff}</p>
-        <span class="cursor cursor-aaron" aria-hidden="true">
-          <svg viewBox="0 0 16 20"><path d="M1 1l13.5 9.2-6.3 1.1-3.3 6.2z" /></svg>
-          <b>Aaron</b>
-        </span>
-      </div>
-    </section>
+      </section>
+
+      <!-- ============ CONTACT ============ -->
+      <section class="card contact o-7" aria-labelledby="c-h">
+        <h2 id="c-h" class="card-h">Contact</h2>
+        <a class="row-link" href={`mailto:${person.email}`}><span>Email</span><strong>{person.email}</strong></a>
+        <a class="row-link" href={person.phoneHref}><span>Phone</span><strong>{person.phone}</strong></a>
+        <a class="row-link" href={person.linkedin} rel="noopener"><span>LinkedIn</span><strong>aaron-adams96</strong></a>
+        <a class="row-link" href={person.resumePdf} download><span>Resume</span><strong>Download PDF</strong></a>
+      </section>
+    </aside>
   </div>
 
   <div class="print-only">
@@ -210,152 +167,106 @@ const shortOrg = (w: string) => w.split(' · ')[0];
 </Base>
 
 <style>
-  /* ---------- canvas ---------- */
-  .canvas {
-    background-color: var(--canvas);
-    background-image: radial-gradient(var(--dot) 1px, transparent 1.2px);
-    background-size: 22px 22px;
-    padding: 1.5rem .75rem 4rem;
+  .grid { max-width: 80rem; margin: 0 auto; padding: 1rem .75rem 1rem; display: grid; gap: 1rem; }
+  @media (min-width: 1000px) { .grid { grid-template-columns: minmax(0, 1fr) 26rem; padding: 1.25rem 1rem 1rem; } }
+  .col-main, .col-side { display: grid; gap: 1rem; align-content: start; }
+  /* One column on phones and tablets: show career right after the highlights. */
+  @media (max-width: 999px) {
+    .col-main, .col-side { display: contents; }
+    .o-1 { order: 1; } .o-2 { order: 2; } .o-3 { order: 3; } .o-4 { order: 4; } .o-5 { order: 5; } .o-6 { order: 6; } .o-7 { order: 7; }
   }
-  @media (min-width: 760px) { .canvas { padding: 2.5rem 2rem 6rem; } }
-  .frame-wrap { max-width: 74rem; margin: 0 auto 2.25rem; }
-  .frame-label { margin: 0 0 .4rem 2px; font-family: var(--ui); font-size: .75rem; color: var(--ink-3); }
-  .frame {
-    position: relative; background: var(--paper); border-radius: 2px;
-    box-shadow: 0 0 0 1px rgba(0,0,0,.04), 0 1px 3px rgba(0,0,0,.06);
-    padding: 1.75rem 1.25rem 2rem;
-  }
-  @media (min-width: 760px) { .frame { padding: 3rem 3rem 3.25rem; } }
+  .card { background: var(--card); border-radius: 16px; border: 1px solid var(--line); overflow: hidden; }
+  .card-h { font-size: 1.15rem; font-weight: 600; margin: 0; padding: 1.4rem 1.5rem 1rem; }
+  .muted { color: var(--muted); }
 
-  .h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 3.6vw, 2.25rem); letter-spacing: -.02em; line-height: 1.1; margin: 0 0 1.75rem; }
-  .h2-row { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .25rem 2rem; margin-bottom: 1.75rem; }
-  .h2-row .h2 { margin: 0; }
-  .note { margin: 0; color: var(--ink-3); font-size: .95rem; max-width: 30rem; }
+  /* ---------- profile ---------- */
+  .band { display: flex; align-items: center; gap: 1rem; background: var(--team); color: #fff; padding: 1.25rem 1.5rem; flex-wrap: wrap; }
+  .avatar { width: 4.25rem; height: 4.25rem; border-radius: 50%; background: #fff; color: var(--team); display: grid; place-items: center; font-weight: 800; font-size: 1.4rem; letter-spacing: -.03em; flex: none; }
+  .band-txt { min-width: 0; }
+  .band h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 600; line-height: 1.1; }
+  .band p { margin: .2rem 0 0; font-size: 1.05rem; }
+  .follow { margin-left: auto; background: #fff; color: var(--team); border-radius: 999px; padding: .6rem 1.15rem; font-weight: 700; text-decoration: none; }
+  .follow:hover { background: #fbeaea; }
+  .profile-body { display: grid; }
+  @media (min-width: 760px) { .profile-body { grid-template-columns: 1fr 1.05fr; } }
+  .attrs { margin: 0; padding: .5rem 1.5rem 1rem; display: grid; grid-template-columns: 1fr 1fr; column-gap: 1.5rem; }
+  .attrs div { padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .attrs dt { font-size: 1.05rem; }
+  .attrs dd { margin: .1rem 0 0; color: var(--muted); font-size: .88rem; }
 
-  .btn { display: inline-flex; align-items: center; min-height: 2.75rem; padding: 0 1.15rem; border-radius: 8px; font-weight: 600; text-decoration: none; font-size: 1rem; }
-  .btn-blue { background: var(--select-btn); color: #fff; }
-  .btn-blue:hover { background: #085aa6; }
-  .btn-ghost { box-shadow: inset 0 0 0 1px var(--line); background: var(--paper); }
-  .btn-ghost:hover { background: #f6f6f4; }
+  .position { display: grid; grid-template-columns: 1fr auto; gap: 1rem; padding: 1.5rem; border-top: 1px solid var(--line); }
+  @media (min-width: 760px) { .position { border-top: 0; border-left: 1px solid var(--line); } }
+  .pos-h { grid-column: 1 / -1; font-weight: 600; font-size: 1.05rem; margin: 0; }
+  .pos-list p { margin: 0; }
+  .pos-k { color: var(--team); font-weight: 600; }
+  .pos-k2 { color: var(--muted); margin-top: 1rem !important; }
+  .pos-v { margin-top: .15rem !important; }
+  .pos-others { list-style: none; margin: .15rem 0 0; padding: 0; display: grid; gap: .15rem; }
+  .pitch { position: relative; width: 10rem; height: 14rem; background: #f2f2f2; border-radius: 6px; overflow: hidden; }
+  .box { position: absolute; left: 24%; right: 24%; height: 14%; border: 2px solid #fff; }
+  .box-t { top: -2px; } .box-b { bottom: -2px; }
+  .halfway { position: absolute; left: 0; right: 0; top: 50%; border-top: 2px solid #fff; }
+  .halfway::after { content: ''; position: absolute; left: 50%; top: -1.35rem; width: 2.7rem; height: 2.7rem; transform: translateX(-50%); border: 2px solid #fff; border-radius: 50%; }
+  .chip { position: absolute; transform: translate(-50%, -50%); font-size: .7rem; font-weight: 700; color: #fff; background: #6b6b6b; padding: .15rem .45rem; border-radius: 999px; white-space: nowrap; }
+  .chip-main { background: var(--team); font-size: .78rem; padding: .2rem .55rem; }
+  @media (max-width: 400px) { .pitch { width: 8.5rem; height: 12rem; } }
 
-  /* ---------- intro ---------- */
-  .intro { display: grid; gap: 2.25rem; }
-  @media (min-width: 980px) { .intro { grid-template-columns: minmax(0, 1fr) 19rem; gap: 3rem; padding-top: 4rem; padding-bottom: 4rem; } }
-  .name { font-family: var(--display); font-weight: 700; font-size: clamp(3.25rem, 11vw, 7.5rem); line-height: .92; letter-spacing: -.045em; margin: 0; }
-  .line { font-family: var(--display); font-weight: 500; font-size: clamp(1.5rem, 4.4vw, 2.6rem); line-height: 1.2; letter-spacing: -.02em; margin: 1rem 0 1.5rem; color: var(--ink-2); }
-  .sel { position: relative; white-space: nowrap; color: var(--ink); }
-  .sel-box { position: absolute; inset: -.08em -.18em -.04em -.2em; border: 1.5px solid var(--coral); pointer-events: none; }
-  .sel-box i { position: absolute; width: 7px; height: 7px; background: #fff; border: 1.5px solid var(--coral); }
-  .sel-box i:nth-child(1) { left: -4px; top: -4px; } .sel-box i:nth-child(2) { right: -4px; top: -4px; }
-  .sel-box i:nth-child(3) { left: -4px; bottom: -4px; } .sel-box i:nth-child(4) { right: -4px; bottom: -4px; }
-  .sel-box b { position: absolute; left: -1.5px; top: -1.45rem; font-family: var(--ui); font-size: .72rem; font-weight: 600; letter-spacing: 0; color: #2a1208; background: var(--coral); padding: .1rem .4rem; border-radius: 3px 3px 3px 0; }
-  .lede { max-width: 38rem; font-size: 1.125rem; line-height: 1.6; color: var(--ink-2); margin: 0 0 2rem; }
-  .cta-row { position: relative; display: flex; flex-wrap: wrap; gap: .6rem; }
+  /* ---------- highlights ---------- */
+  .stats { list-style: none; margin: 0; padding: .25rem 1.5rem 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 1rem; text-align: center; }
+  @media (min-width: 760px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+  .stats li { display: grid; gap: .3rem; justify-items: center; align-content: start; }
+  .num { font-size: 1.6rem; font-weight: 600; letter-spacing: -.02em; }
+  .num-badge { background: var(--green); color: #fff; border-radius: 6px; padding: 0 .5rem; }
+  .lab { font-size: .9rem; }
+  .src { color: var(--muted); font-size: .8rem; }
 
-  /* collaborator cursors */
-  .cursor { position: absolute; display: inline-flex; align-items: flex-start; pointer-events: none; }
-  .cursor svg { width: 16px; height: 20px; fill: var(--c); stroke: #fff; stroke-width: 1.2; filter: drop-shadow(0 1px 1px rgba(0,0,0,.2)); }
-  .cursor b { margin: 14px 0 0 -2px; font-family: var(--ui); font-size: .75rem; font-weight: 600; color: #fff; background: var(--c); padding: .15rem .45rem; border-radius: 2px 6px 6px 6px; white-space: nowrap; }
-  .cursor-you { --c: var(--select-btn); left: 8.5rem; top: 1.9rem; animation: drift 7s ease-in-out infinite; }
-  .cursor-aaron { --c: var(--aaron); right: 12%; bottom: 3.2rem; animation: drift 9s ease-in-out infinite reverse; }
-  .cursor-aaron b { color: #fff; }
-  @keyframes drift { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(14px, 6px); } 60% { transform: translate(-6px, 10px); } }
-  @media (max-width: 560px) { .cursor-aaron { right: 8%; bottom: 1.25rem; } }
+  /* ---------- strengths ---------- */
+  .traits { list-style: none; margin: 0; padding: 0 1.5rem 1.25rem; display: grid; gap: 0 1.5rem; }
+  @media (min-width: 760px) { .traits { grid-template-columns: 1fr 1fr; } }
+  .traits li { padding: 1rem 0; border-top: 1px solid var(--line); }
+  .traits p { margin: 0; }
+  .trait-h { font-weight: 600; font-size: 1.05rem; }
+  .trait-p { margin-top: .4rem !important; color: var(--team); font-weight: 600; }
 
-  /* properties panel */
-  .panel { align-self: start; border: 1px solid var(--line); border-radius: 10px; font-family: var(--ui); font-size: .875rem; background: #fcfcfb; }
-  .panel-title { margin: 0; padding: .75rem 1rem; border-bottom: 1px solid var(--line); font-weight: 600; }
-  .panel dl { margin: 0; padding: .4rem 0 .6rem; }
-  .panel dl > div { display: grid; grid-template-columns: 5.5rem 1fr; gap: .5rem; padding: .45rem 1rem; }
-  .panel dt { color: var(--ink-3); }
-  .panel dd { margin: 0; overflow-wrap: anywhere; }
-  .panel dd a { color: var(--select-ink); text-underline-offset: 2px; }
-  .chips { display: flex; flex-wrap: wrap; gap: .3rem; }
-  .chips span { background: #efefec; border-radius: 4px; padding: .05rem .4rem; }
+  /* ---------- how I work ---------- */
+  .how { list-style: none; margin: 0; padding: 0 1.5rem 1.25rem; }
+  .how li { display: grid; grid-template-columns: 2rem 1fr; gap: .75rem; padding: .9rem 0; border-top: 1px solid var(--line); }
+  .how p { margin: 0; }
+  .how-n { width: 1.75rem; height: 1.75rem; border-radius: 6px; background: #f1f1f1; display: grid; place-items: center; font-weight: 700; font-size: .85rem; }
+  .how-l { font-weight: 600; font-size: 1.02rem; }
 
-  /* ---------- results tiles ---------- */
-  .tiles { list-style: none; margin: 0; padding: 0; display: grid; gap: .75rem; grid-template-columns: 1fr; }
-  @media (min-width: 620px) { .tiles { grid-template-columns: 1fr 1fr; } }
-  @media (min-width: 1080px) { .tiles { grid-template-columns: 1.15fr 1fr 1fr 1.25fr; } }
-  .tile { background: var(--c); border-radius: 14px; padding: 1.4rem 1.3rem 1.2rem; display: flex; flex-direction: column; gap: .55rem; min-height: 12.5rem; }
-  .tile-1 { border-radius: 14px 14px 14px 64px; }
-  .tile-2 { border-radius: 999px 999px 14px 14px; padding-top: 2.2rem; }
-  .tile-3 { border-radius: 14px 64px 14px 14px; }
-  .tile-fig { font-family: var(--display); font-weight: 700; font-size: clamp(2.4rem, 5vw, 3.2rem); line-height: 1; letter-spacing: -.04em; }
-  .tile-cap { font-size: .98rem; line-height: 1.45; }
-  .tile-src { margin-top: auto; font-size: .8rem; font-weight: 600; color: rgba(0,0,0,.72); }
+  /* ---------- career ---------- */
+  .group { margin: 0; padding: 1rem 1.5rem .4rem; color: var(--muted); font-weight: 600; font-size: .95rem; border-top: 1px solid var(--line); }
+  .clubs { list-style: none; margin: 0; padding: 0 0 .5rem; }
+  .clubs summary { list-style: none; display: grid; grid-template-columns: 2.4rem 1fr auto; gap: .85rem; align-items: center; padding: .7rem 1.5rem; cursor: pointer; }
+  .clubs summary::-webkit-details-marker { display: none; }
+  .clubs summary:hover { background: #fafafa; }
+  .crest { width: 2.4rem; height: 2.4rem; border-radius: 50%; background: var(--c); color: #fff; display: grid; place-items: center; font-size: .75rem; font-weight: 800; }
+  .club-txt { display: grid; }
+  .club-txt strong { font-weight: 600; }
+  .club-txt span { color: var(--muted); font-size: .88rem; }
+  .chev { color: var(--muted); font-size: 1.35rem; transition: transform .15s; }
+  .clubs details[open] .chev { transform: rotate(90deg); }
+  .club-detail { margin: 0 1.5rem .9rem 4.75rem; padding-left: 1rem; color: #3d3d3d; font-size: .9rem; }
+  .club-detail li + li { margin-top: .2rem; }
+  .card-foot { display: flex; justify-content: space-between; gap: 1rem; margin: 0; padding: .9rem 1.5rem; border-top: 1px solid var(--line); font-size: .85rem; color: var(--muted); }
+  .card-foot a { color: var(--ink); font-weight: 600; }
 
-  /* ---------- gantt ---------- */
-  .gantt { font-family: var(--ui); }
-  .axis { position: relative; height: 1.4rem; font-size: .72rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
-  .axis span { position: absolute; transform: translateX(-1px); }
-  .rows { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
-  .row { border-bottom: 1px solid var(--line); }
-  .row summary { list-style: none; cursor: pointer; display: grid; gap: .5rem; padding: .85rem .25rem; border-radius: 4px; }
-  .row summary::-webkit-details-marker { display: none; }
-  .row summary:hover { background: #f8f8f6; }
-  .row-label { display: flex; flex-wrap: wrap; align-items: baseline; gap: .1rem .5rem; }
-  .row-label strong { font-size: 1rem; }
-  .row-label span { color: var(--ink-2); font-size: .9rem; }
-  .row-dates { color: var(--ink-3) !important; font-variant-numeric: tabular-nums; }
-  .track { position: relative; height: 18px; }
-  .track i { position: absolute; top: -6px; bottom: -6px; width: 1px; background: #f0f0ed; }
-  .bar { position: absolute; top: 0; height: 18px; border-radius: 4px; background: var(--c); }
-  .bar-now::after { content: ''; position: absolute; right: -3px; top: -3px; width: 10px; height: 10px; border-radius: 50%; background: #1fbf5f; box-shadow: 0 0 0 3px #fff; }
-  .row details[open] .bar { box-shadow: 0 0 0 2px #fff, 0 0 0 3.5px var(--select); }
-  .row-body { padding: .25rem .25rem 1.25rem; max-width: 46rem; }
-  .row-summary { margin: 0 0 .5rem; font-weight: 600; }
-  .row-body ul { margin: 0; padding-left: 1.1rem; color: var(--ink-2); line-height: 1.55; }
-  .row-body li + li { margin-top: .2rem; }
-  @media (min-width: 860px) {
-    .axis { margin-left: 18.5rem; }
-    .row summary { grid-template-columns: 18rem 1fr; align-items: center; gap: .5rem; }
-    .row-label { display: grid; gap: 0; }
-  }
-
-  /* ---------- components ---------- */
-  .components { list-style: none; margin: 0; padding: 0; display: grid; gap: 1rem; }
-  @media (min-width: 760px) { .components { grid-template-columns: 1fr 1fr; gap: 1.25rem; } }
-  .component { border: 1px dashed #c9b6ff; border-radius: 6px; padding: 1.1rem 1.2rem 1.2rem; }
-  .comp-name { display: flex; align-items: center; gap: .5rem; margin: 0 0 .4rem; font-family: var(--display); font-weight: 600; font-size: 1.3rem; color: #5a2fd6; }
-  .comp-icon { width: .8rem; height: .8rem; border: 2px solid currentColor; transform: rotate(45deg); border-radius: 2px; flex: none; }
-  .comp-items { margin: 0 0 .9rem; color: var(--ink-2); }
-  .pin { display: flex; gap: .55rem; align-items: flex-start; margin: 0; background: #f7f7f5; border-radius: 0 12px 12px 12px; padding: .6rem .75rem; font-size: .95rem; }
-  .avatar { flex: none; display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--aaron); color: #fff; font-weight: 700; font-size: .8rem; font-family: var(--ui); }
-
-  /* ---------- stickies ---------- */
-  .frame-board { background-color: #fbfbfa; background-image: radial-gradient(#e6e6e2 1px, transparent 1.2px); background-size: 18px 18px; }
-  .stickies { list-style: none; margin: 0; padding: .5rem 0 0; display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(15.5rem, 1fr)); }
-  .sticky { background: var(--c); padding: 1.25rem 1.2rem 1rem; min-height: 15rem; display: flex; flex-direction: column; gap: .5rem; transform: rotate(var(--r)); box-shadow: 0 1px 1px rgba(0,0,0,.06), 0 10px 18px -10px rgba(0,0,0,.35); }
-  .sticky h3 { font-family: var(--display); font-weight: 700; font-size: 1.5rem; letter-spacing: -.02em; margin: 0; }
-  .sticky p { margin: 0; line-height: 1.45; }
-  .sticky-more { color: rgba(0,0,0,.72); font-size: .95rem; }
-  .sticky a { font-weight: 600; text-underline-offset: 3px; }
-  .sticky-foot { margin-top: auto !important; display: flex; justify-content: space-between; align-items: center; font-size: .8rem; font-weight: 600; padding-top: .5rem; }
-  .status { background: rgba(255,255,255,.65); border-radius: 999px; padding: .1rem .5rem; }
-
-  /* ---------- comment thread ---------- */
-  .thread { list-style: none; margin: 0; padding: 0; max-width: 44rem; border: 1px solid var(--line); border-radius: 12px; }
-  .comment { display: grid; grid-template-columns: 1.6rem 1fr; gap: .75rem; padding: 1rem 1.1rem; }
-  .comment + .comment { border-top: 1px solid var(--line); }
-  .comment p { margin: 0; }
-  .c-head { font-size: .85rem; color: var(--ink-3); }
-  .c-head strong { color: var(--ink); font-weight: 600; }
-  .c-line { font-family: var(--display); font-weight: 600; font-size: 1.15rem; margin: .1rem 0 .15rem !important; }
-  .c-proof { color: var(--ink-2); }
+  /* ---------- ventures ---------- */
+  .trophies { list-style: none; margin: 0 1.25rem 1.25rem; padding: 0; border: 1px solid var(--line); border-radius: 12px; overflow: hidden; }
+  .trophies li { display: grid; grid-template-columns: 4.75rem 1fr; gap: .75rem; padding: 1rem; }
+  .trophies li + li { border-top: 1px solid var(--line); }
+  .trophies p { margin: .15rem 0; color: var(--muted); font-size: .9rem; }
+  .trophies a { font-weight: 600; font-size: .9rem; }
+  .t-when { font-weight: 600; font-size: .9rem; color: var(--muted); }
 
   /* ---------- contact ---------- */
-  .contact { overflow: hidden; }
-  .contact-h { font-family: var(--display); font-weight: 700; font-size: clamp(3rem, 10vw, 6rem); letter-spacing: -.045em; line-height: .95; margin: 0 0 1rem; }
-  .contact-intro { margin: 0 0 1.5rem; max-width: 34rem; color: var(--ink-2); font-size: 1.1rem; }
-  .contact-mail { margin: 0 0 1rem; font-family: var(--display); font-weight: 600; font-size: clamp(1.3rem, 4.2vw, 2.25rem); letter-spacing: -.02em; overflow-wrap: anywhere; }
-  .contact-mail a { color: var(--select-ink); text-underline-offset: 6px; text-decoration-thickness: 2px; }
-  .contact-list { list-style: none; margin: 0 0 2.5rem; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
-  .contact-list a { display: inline-flex; align-items: center; min-height: 2.5rem; padding: 0 .9rem; border-radius: 999px; box-shadow: inset 0 0 0 1px var(--line); text-decoration: none; font-weight: 600; }
-  .contact-list a:hover { background: #f6f6f4; }
-  .signoff { margin: 0; color: var(--ink-3); font-size: .95rem; }
+  .contact { padding-bottom: .5rem; }
+  .row-link { display: flex; justify-content: space-between; gap: 1rem; padding: .8rem 1.5rem; border-top: 1px solid var(--line); text-decoration: none; }
+  .row-link span { color: var(--muted); }
+  .row-link strong { font-weight: 600; overflow-wrap: anywhere; text-align: right; }
+  .row-link:hover { background: #fafafa; }
 
-  /* ---------- print: the plain resume instead ---------- */
   .print-only { display: none; }
   @media print { .print-only { display: block; } }
 </style>

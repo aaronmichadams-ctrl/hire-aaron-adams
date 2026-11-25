@@ -1,18 +1,20 @@
 ---
 import Base from '../layouts/Base.astro';
 ---
-<Base file="Missing frame" title="Not found · Aaron Adams" description="This page doesn't exist." noindex>
+<Base title="Not found · Aaron Adams" description="This page doesn't exist." noindex>
   <div class="nf">
-    <p class="nf-label">404</p>
-    <h1>This frame got deleted.</h1>
-    <p>The page you wanted isn't here. Everything else is.</p>
-    <p class="nf-links"><a href="/">Back to the portfolio</a><a href="/resume">Plain-text resume</a></p>
+    <div class="nf-card">
+      <p class="nf-k">404</p>
+      <h1>Offside. This page doesn't exist.</h1>
+      <p>Everything else is still on the profile.</p>
+      <p class="nf-links"><a href="/">Back to the profile</a><a href="/resume">Plain-text resume</a></p>
+    </div>
   </div>
 </Base>
 <style>
-  .nf { max-width: 40rem; margin: 0 auto; padding: 18vh 1.25rem; }
-  .nf-label { font-size: .8rem; color: var(--ink-3); margin: 0; }
-  h1 { font-family: var(--display); font-weight: 700; font-size: clamp(2.2rem, 7vw, 3.5rem); letter-spacing: -.04em; line-height: 1; margin: .5rem 0 1rem; }
-  .nf-links { display: flex; gap: 1.25rem; }
-  .nf-links a { color: var(--select-ink); font-weight: 600; }
+  .nf { max-width: 40rem; margin: 0 auto; padding: 12vh 1rem; }
+  .nf-card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 2rem 1.5rem; }
+  .nf-k { margin: 0; color: var(--team); font-weight: 700; }
+  h1 { font-size: clamp(1.6rem, 5vw, 2.2rem); line-height: 1.1; margin: .4rem 0 .75rem; }
+  .nf-links { display: flex; gap: 1.25rem; font-weight: 600; }
 </style>

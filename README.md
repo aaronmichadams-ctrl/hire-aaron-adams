@@ -1,6 +1,6 @@
 # hireaaronadams.com
 
-Personal hiring site for Aaron Adams. Designed like a file in a design tool: a dotted canvas with named frames, a properties panel of quick facts, a project timeline of every job, sticky notes and a comment thread. Built with Astro (static output), deployed on Vercel.
+Personal hiring site for Aaron Adams, laid out like a football player profile: a colored profile band, an attribute grid, target roles shown as positions on a pitch, career highlights, and a career list with the current club and former clubs. Built with Astro (static output), deployed on Vercel.
 
 ## Pages
 
@@ -13,6 +13,7 @@ Personal hiring site for Aaron Adams. Designed like a file in a design tool: a d
 ## Edit the words
 
 All copy lives in [`src/data/aaron.ts`](src/data/aaron.ts). Change text there; you never need to touch a component.
+The target roles on the pitch are `positions` in that file: change a name, a short code, or move a chip with its `x`/`y` (percent from the left/top).
 Search the repo for `TODO(aaron)` to find anything that still needs your input.
 
 House rule: no em dashes. `npm run build` fails if one sneaks in (`npm run lint:copy` runs the check on its own).
@@ -88,12 +89,12 @@ If the current site is on a builder like Wix or Squarespace, disconnect the doma
 
 ```
 src/data/aaron.ts            all copy and facts
-src/pages/index.astro        the portfolio (canvas, frames, timeline)
+src/pages/index.astro        the profile page
 src/pages/resume.astro       plain resume page
-src/pages/404.astro          "this frame got deleted"
+src/pages/404.astro          "Offside. This page doesn't exist."
 src/components/ResumeView.astro  the plain resume: /resume and the print version of /
-src/layouts/Base.astro       head, SEO, Open Graph, the file bar header
-src/styles/global.css        color tokens, file bar, resume and print styles
+src/layouts/Base.astro       head, SEO, Open Graph, top bar, footer
+src/styles/global.css        color tokens, top bar, footer, resume and print styles
 scripts/make-og.mjs          renders public/og.png
 scripts/lint-copy.mjs        em dash check
 DECISIONS.md                 why it looks the way it does
