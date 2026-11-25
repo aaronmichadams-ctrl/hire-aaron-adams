@@ -106,7 +106,7 @@ export const results: Result[] = [
   },
 ];
 
-/** Most recent first. The board shows them oldest first. */
+/** Most recent first (current job, then by end date). The board shows them oldest first. */
 export const jobs: Job[] = [
   {
     id: 'nxt',
@@ -126,6 +126,18 @@ export const jobs: Job[] = [
     ],
   },
   {
+    id: 'atlutd',
+    org: 'Atlanta United FC',
+    title: 'Program & Operations Specialist',
+    dates: 'Jan 2024 to Jun 2025',
+    ran: [
+      'Ran daily school and logistics for 20+ program members with a partner private international school.',
+      'Kept scheduling, attendance and compliance records accurate for in-person and remote programming at once.',
+      'Handled food service and delivery for 40+ members across two program groups.',
+      'Kept the program running while the group traveled for days at a time, in the US and abroad.',
+    ],
+  },
+  {
     id: 'winshape',
     org: 'WinShape Camps',
     title: 'Operations & Logistics Assistant',
@@ -134,18 +146,6 @@ export const jobs: Job[] = [
       'Planned and ran programming and daily logistics for 1,100+ participants.',
       'Kept track of 125,000+ items of inventory across programs running at the same time.',
       'Ran setup and teardown so every day started and finished on time.',
-    ],
-  },
-  {
-    id: 'atlutd',
-    org: 'Atlanta United FC',
-    title: 'Program & Operations Specialist',
-    dates: 'Jan 2023 to Jun 2025',
-    ran: [
-      'Ran daily school and logistics for 20+ program members with a partner private international school.',
-      'Kept scheduling, attendance and compliance records accurate for in-person and remote programming at once.',
-      'Handled food service and delivery for 40+ members across two program groups.',
-      'Kept the program running while the group traveled for days at a time, in the US and abroad.',
     ],
   },
   {
