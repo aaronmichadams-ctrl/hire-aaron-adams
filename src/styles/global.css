@@ -1,0 +1,53 @@
+/* Checkpoint 1: deliberately plain. Only what is needed to work. */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: system-ui, sans-serif; line-height: 1.5; background: #fff; color: #111; }
+main { padding: 1rem; max-width: 60rem; margin: 0 auto; }
+main:focus { outline: none; }
+:focus-visible { outline: 3px solid #b3261e; outline-offset: 2px; }
+
+.skip { position: absolute; left: -999px; top: 0; }
+.skip:focus { left: 1rem; top: .5rem; background: #fff; padding: .5rem; z-index: 10; }
+
+.site-header {
+  position: sticky; top: 0; z-index: 5;
+  display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; justify-content: space-between;
+  padding: .5rem 1rem; background: #fff; border-bottom: 1px solid #ccc;
+}
+.brand { font-weight: 700; color: inherit; text-decoration: none; }
+.header-actions { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; }
+.boring-toggle { display: inline-flex; gap: .4rem; align-items: center; color: inherit; font-size: .9rem; }
+.bt-track { width: 2.2rem; height: 1.2rem; border: 2px solid currentColor; border-radius: 1rem; position: relative; }
+.bt-knob { position: absolute; top: 1px; left: 1px; width: .8rem; height: .8rem; border-radius: 50%; background: currentColor; transition: transform .15s; }
+[data-boring] .bt-knob { transform: translateX(1rem); }
+.btn-resume { padding: .4rem .7rem; border: 2px solid #111; color: #111; font-weight: 700; text-decoration: none; }
+.r-muted { color: #555; font-weight: 400; }
+.todo { background: #fff3b0; }
+
+/* Boring mode swap */
+.boring { display: none; }
+[data-boring] .fun { display: none; }
+[data-boring] .boring { display: block; }
+
+/* The plain resume */
+.resume { max-width: 46rem; margin: 0 auto; font-family: Georgia, 'Times New Roman', serif; font-size: 1rem; }
+.r-name { margin: 0; font-size: 2rem; }
+.r-role, .r-contact { margin: .2rem 0; }
+.r-h { font-size: 1rem; text-transform: uppercase; letter-spacing: .08em; border-bottom: 1px solid #111; margin: 1.25rem 0 .5rem; }
+.r-job { margin-bottom: .75rem; }
+.r-job-title { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .5rem; font-size: 1rem; margin: 0 0 .2rem; }
+.r-dates { font-weight: 400; }
+.resume ul { margin: .2rem 0; padding-left: 1.2rem; }
+.resume a { color: inherit; }
+
+@media print {
+  .site-header, .skip, .fun { display: none !important; }
+  .boring { display: block !important; }
+  main { padding: 0; max-width: none; }
+  body { font-size: 10.5pt; }
+  .resume { font-size: 10.5pt; max-width: none; }
+  .r-h { margin-top: .8rem; }
+  .r-job { break-inside: avoid; }
+  @page { margin: 0.6in; }
+}
+pre { white-space: pre-wrap; overflow-wrap: anywhere; }

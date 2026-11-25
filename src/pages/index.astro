@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+import ResumeView from '../components/ResumeView.astro';
+import { person, receipts, tickets, stations, ventures, testKitchen, principles, contact } from '../data/aaron';
+const receiptById = Object.fromEntries(receipts.map((r) => [r.id, r]));
+---
+<Base>
+  <div class="fun">
+    <section id="hero" aria-labelledby="hero-title">
+      <p>{person.name} · {person.role} · {person.location}</p>
+      <h1 id="hero-title">{person.headline}</h1>
+      <p>{person.positioning}</p>
+      <p><a href={person.resumePdf} download>Download resume (PDF)</a></p>
+
+      <h2>Pick a problem</h2>
+      <ul class="tickets">
+        {tickets.map((t) => (
+          <li>
+            <details>
+              <summary>{t.table}: {t.problem}</summary>
+              <p>{t.answer}</p>
+              {t.receiptId && <p>Receipt #{t.receiptId}: {receiptById[t.receiptId].total}</p>}
+              <p>From: {t.from}</p>
+            </details>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="receipts" aria-labelledby="receipts-title">
+      <h2 id="receipts-title">Receipts</h2>
+      <ul>
+        {receipts.map((r) => (
+          <li>
+            <pre>#{r.id}  1x {r.item} ....... {r.total}</pre>
+            <p>{r.plain} ({r.where})</p>
+            <details>
+              <summary>How</summary>
+              <ul>{r.how.map((h) => <li>{h}</li>)}</ul>
+            </details>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="line" aria-labelledby="line-title">
+      <h2 id="line-title">The Line</h2>
+      <ol>
+        {stations.map((s) => (
+          <li>
+            <h3>{s.station}: {s.org}, {s.title} ({s.dates})</h3>
+            <ul>{s.ran.map((r) => <li>{r}</li>)}</ul>
+            <p>What it taught me: {s.taught}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section id="test-kitchen" aria-labelledby="tk-title">
+      <h2 id="tk-title">The Test Kitchen</h2>
+      <p>{testKitchen.motto}</p>
+      <p>{testKitchen.intro}</p>
+      <ul>
+        {ventures.map((v) => (
+          <li>
+            <h3>{v.name} ({v.when}) [{v.status}]</h3>
+            <p>{v.pitch}</p>
+            <p>What happened: {v.happened}</p>
+            <p>What it taught me: {v.taught}</p>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <h2 id="how-title">How I work</h2>
+      <ol>
+        {principles.map((p) => (
+          <li><strong>{p.line}</strong> {p.proof}</li>
+        ))}
+      </ol>
+    </section>
+
+    <section id="contact" aria-labelledby="contact-title">
+      <h2 id="contact-title">{contact.heading}</h2>
+      <p>{contact.intro}</p>
+      <ul>
+        <li><a href={`mailto:${person.email}`}>{person.email}</a></li>
+        <li><a href={person.phoneHref}>{person.phone}</a></li>
+        <li>{person.linkedin}</li>
+        <li><a href={person.resumePdf} download>Download resume (PDF)</a></li>
+      </ul>
+      <p>{contact.signoff}</p>
+    </section>
+  </div>
+
+  <div class="boring">
+    <ResumeView headingLevel={2} />
+  </div>
+</Base>
