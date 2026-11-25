@@ -1,0 +1,133 @@
+---
+// Direction B: Operator. Clean, data-forward. Experience drawn as a real project timeline.
+import Base from '../../layouts/Base.astro';
+import { person, results, jobs, skills } from '../../data/aaron';
+import '@fontsource-variable/inter';
+import '@fontsource/ibm-plex-mono';
+import '@fontsource/ibm-plex-mono/600.css';
+
+// Timeline spans (lab sketch). "Summer 2023" drawn as Jun to Aug 2023; "present" as Nov 2026.
+const spans: Record<string, [number, number]> = {
+  myaudiopet: [2018 + 7 / 12, 2023 + 2 / 12],
+  chickfila: [2020 + 7 / 12, 2022 + 5 / 12],
+  copper: [2021 + 8 / 12, 2022 + 8 / 12],
+  winshape: [2023 + 5 / 12, 2023 + 7 / 12],
+  nxt: [2023 + 7 / 12, 2026 + 11 / 12],
+  atlutd: [2024, 2025 + 5 / 12],
+};
+const start = 2018, end = 2027;
+const pct = (y: number) => ((y - start) / (end - start)) * 100;
+const rows = [...jobs].reverse();
+const years = Array.from({ length: end - start }, (_, i) => start + i);
+---
+<Base title="Lab B · Operator" noindex>
+  <div class="op">
+    <section class="op-hero">
+      <p class="op-status"><span class="dot" aria-hidden="true"></span> Open to roles · {person.location}</p>
+      <h1>Aaron Adams</h1>
+      <p class="op-sub">I run operations, programs and teams.</p>
+      <p class="op-lede">{person.positioning}</p>
+      <div class="op-actions">
+        <a class="op-btn" href={person.resumePdf} download>Download resume</a>
+        <a class="op-btn ghost" href={`mailto:${person.email}`}>Email me</a>
+        <a class="op-btn ghost" href={person.linkedin} rel="noopener">LinkedIn</a>
+      </div>
+    </section>
+
+    <section aria-labelledby="op-k">
+      <h2 id="op-k" class="op-h">Results</h2>
+      <ul class="op-kpis">
+        {results.map((r) => (
+          <li><span class="kpi">{r.figure}</span><span class="kpi-cap">{r.plain}</span><span class="kpi-src">{r.where.split(' · ')[0]}</span></li>
+        ))}
+      </ul>
+    </section>
+
+    <section aria-labelledby="op-t">
+      <h2 id="op-t" class="op-h">Timeline</h2>
+      <p class="op-note">Eight years of running things, often more than one at a time.</p>
+      <div class="gantt">
+        <div class="g-axis" aria-hidden="true">
+          {years.map((y) => <span style={`left:${pct(y)}%`}>{y}</span>)}
+        </div>
+        <ol class="g-rows">
+          {rows.map((j) => {
+            const [a, b] = spans[j.id];
+            return (
+              <li class="g-row">
+                <div class="g-label"><strong>{j.org}</strong><span>{j.title} · {j.dates}</span></div>
+                <div class="g-track" aria-hidden="true">
+                  {years.map((y) => <i style={`left:${pct(y)}%`}></i>)}
+                  <span class={`g-bar ${j.id === 'nxt' ? 'now' : ''}`} style={`left:${pct(a)}%;width:${Math.max(pct(b) - pct(a), 1.6)}%`}></span>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </section>
+
+    <section aria-labelledby="op-s">
+      <h2 id="op-s" class="op-h">Capabilities</h2>
+      <ul class="op-caps">
+        {skills.map((s) => (
+          <li><h3>{s.name}</h3><p>{s.items}</p><p class="proof">↳ {s.proof}</p></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="op-contact" aria-labelledby="op-c">
+      <h2 id="op-c">Let's talk.</h2>
+      <p><a href={`mailto:${person.email}`}>{person.email}</a> · <a href={person.phoneHref}>{person.phone}</a></p>
+    </section>
+  </div>
+</Base>
+
+<style>
+  :global(main) { max-width: none; padding: 0; }
+  :global(body) { background: #f6f7f4; }
+  :global(.site-header) { background: rgba(246,247,244,.92); backdrop-filter: blur(8px); border-image: none; border-bottom: 1px solid #e2e4de; }
+  :global(.brand) { font-family: 'Inter Variable', sans-serif; font-weight: 700; font-size: 1rem; letter-spacing: -.01em; }
+  :global(.btn-resume) { background: #14532d; color: #fff; box-shadow: none; transform: none; border-radius: 8px; }
+  :global(.btn-resume .r-muted) { color: #bfe3cc; }
+  .op { --ink: #111613; --muted: #5b625d; --line: #e2e4de; --green: #15803d; --deep: #14532d; --amber: #d97706; color: var(--ink); font-family: 'Inter Variable', system-ui, sans-serif; max-width: 70rem; margin: 0 auto; padding: 0 1.25rem 4rem; }
+  .op section { padding: 3rem 0; }
+  .op-hero { padding-top: 4.5rem !important; }
+  .op-status { display: inline-flex; align-items: center; gap: .5rem; font-family: 'IBM Plex Mono', monospace; font-size: .85rem; background: #fff; border: 1px solid var(--line); padding: .35rem .75rem; border-radius: 999px; margin: 0 0 1.75rem; }
+  .dot { width: .55rem; height: .55rem; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 4px rgba(34,197,94,.18); }
+  .op h1 { font-size: clamp(3rem, 10vw, 6rem); line-height: .95; letter-spacing: -.045em; margin: 0; font-weight: 750; }
+  .op-sub { font-size: clamp(1.4rem, 3.6vw, 2.2rem); letter-spacing: -.02em; color: var(--muted); margin: .6rem 0 1.5rem; font-weight: 500; }
+  .op-lede { max-width: 40rem; font-size: 1.1rem; line-height: 1.6; margin: 0 0 2rem; }
+  .op-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+  .op-btn { padding: .8rem 1.2rem; border-radius: 8px; background: var(--deep); color: #fff; text-decoration: none; font-weight: 600; }
+  .op-btn.ghost { background: #fff; color: var(--ink); border: 1px solid var(--line); }
+  .op-h { font-family: 'IBM Plex Mono', monospace; font-size: .85rem; font-weight: 600; text-transform: uppercase; letter-spacing: .1em; color: var(--muted); margin: 0 0 1.25rem; }
+  .op-note { margin: -.5rem 0 1.5rem; color: var(--muted); }
+  .op-kpis { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); gap: 1rem; }
+  .op-kpis li { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1.25rem; display: grid; gap: .5rem; }
+  .kpi { font-size: 2.6rem; font-weight: 750; letter-spacing: -.04em; line-height: 1; color: var(--deep); }
+  .kpi-cap { line-height: 1.45; }
+  .kpi-src { font-family: 'IBM Plex Mono', monospace; font-size: .8rem; color: var(--muted); }
+  .gantt { background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 1rem 1rem 1.25rem; }
+  .g-axis { position: relative; height: 1.5rem; margin-left: 0; font-family: 'IBM Plex Mono', monospace; font-size: .75rem; color: var(--muted); }
+  .g-axis span { position: absolute; transform: translateX(-2px); }
+  .g-rows { list-style: none; margin: 0; padding: 0; }
+  .g-row { display: grid; gap: .35rem; padding: .7rem 0; border-top: 1px solid var(--line); }
+  .g-label strong { display: block; }
+  .g-label span { font-size: .88rem; color: var(--muted); }
+  .g-track { position: relative; height: 14px; }
+  .g-track i { position: absolute; top: -4px; bottom: -4px; width: 1px; background: #eef0ea; }
+  .g-bar { position: absolute; top: 0; height: 14px; border-radius: 4px; background: var(--green); }
+  .g-bar.now { background: linear-gradient(90deg, var(--green), #4ade80); }
+  @media (min-width: 820px) {
+    .g-axis { margin-left: 17rem; }
+    .g-row { grid-template-columns: 17rem 1fr; align-items: center; }
+  }
+  .op-caps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); gap: 1rem; }
+  .op-caps li { border-top: 3px solid var(--ink); padding-top: 1rem; }
+  .op-caps h3 { margin: 0 0 .4rem; font-size: 1.15rem; }
+  .op-caps p { margin: 0 0 .5rem; color: var(--muted); line-height: 1.5; }
+  .op-caps .proof { color: var(--deep); font-weight: 600; }
+  .op-contact h2 { font-size: clamp(2.4rem, 7vw, 4rem); letter-spacing: -.04em; margin: 0 0 .5rem; }
+  .op-contact a { color: var(--deep); font-weight: 600; }
+</style>
