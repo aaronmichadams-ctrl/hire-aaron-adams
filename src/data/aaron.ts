@@ -76,7 +76,7 @@ export const board = {
   howHeading: 'How I work',
   contactHeading: "Let's talk.",
   contactIntro: 'Hiring for operations, programs or growth? I would love to hear what your team is working on.',
-  signoff: 'This board gets erased every night. My follow-through does not.',
+  signoff: "Leave me a note. I'll follow up before the marker dries.",
 };
 
 export const results: Result[] = [
@@ -203,12 +203,12 @@ export const ventures: Venture[] = [
   },
   {
     id: 'rentmobili',
-    name: 'Rentmobili',
+    name: 'Mobili',
     when: 'Now',
-    // Draft from Aaron's own deploy notes (owner payouts, renter fees). Confirm the one-liner.
-    pitch: 'A rental marketplace that connects owners with renters.',
+    // From rentmobili.com's own copy.
+    pitch: 'A peer-to-peer furniture rental marketplace. Rent furniture from local owners for 3 to 12 months, delivered and set up.',
     status: 'in progress',
-    happened: "What I'm building right now.",
+    happened: "What I'm building right now. The demo is live, and the Atlanta pilot is planned for 2027.",
     url: 'https://www.rentmobili.com',
   },
 ];

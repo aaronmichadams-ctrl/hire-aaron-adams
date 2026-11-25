@@ -51,6 +51,6 @@ A running log. Every rule broken on purpose gets an entry: the rule, how it was 
 - **New source:** a newer resume PDF (now the download) settled the open conflicts: B.S. degree, NXT profitable in year one, Chick-fil-A "youngest member of the kitchen leadership team," My Audio Pet as Warehouse & Fulfillment Supervisor, and updated Atlanta United numbers (20+ members, 40+ for food service).
 - **Corrections from Aaron:** he did not start My Audio Pet and did not rebuild its packing system; both claims are gone. NXT now describes the whole operation he built: partnerships, staffing, training, logistics (housing, food, equipment), supply chain and marketing.
 - **Less borrowed philosophy:** "How I work" no longer quotes the build manifesto. It now uses Aaron's own line from his resume ("I move fast, I track everything, and I follow up until the next step is on the calendar"), each backed by a real result. The "make 50 things" motto is gone.
-- **Things I've started:** cut to Woof Water, NXT Soccer and Rentmobili (current work). Lessons are optional and left out rather than guessed.
+- **Things I've started:** cut to Woof Water, NXT Soccer and Mobili (rentmobili.com, current work). Lessons are optional and left out rather than guessed.
 - **Numbers:** the "How" disclosures were removed; they read awkwardly under a circled number. Each number keeps one plain sentence and where it happened.
 - **40th tab:** fewer, truer cards. Nothing on the page needs a footnote anymore.
