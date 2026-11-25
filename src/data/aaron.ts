@@ -62,6 +62,8 @@ export const person = {
   url: 'https://hireaaronadams.com',
   linkedin: 'https://www.linkedin.com/in/aaron-adams96/',
   resumePdf: '/AaronAdamsResume2026.pdf',
+  photo: '/aaron-320.webp',
+  photoSmall: '/aaron-160.webp',
   positioning:
     'I build and run the operations that keep a business moving: process design, inventory and supply chain, hiring and staffing, fulfillment, and the systems that connect them.',
 };

@@ -46,6 +46,7 @@ const href = (hash: string) => (onHome ? hash : `/${hash}`);
       telephone: person.phone,
       url: person.url,
       sameAs: [person.linkedin],
+      image: new URL(person.photo, Astro.site).toString(),
       address: { '@type': 'PostalAddress', addressLocality: 'Atlanta', addressRegion: 'GA', addressCountry: 'US' },
     })} />
   </head>

@@ -22,7 +22,7 @@ const allPositions = [positions.primary, ...positions.others];
       <!-- ============ PROFILE ============ -->
       <section class="card profile o-1" aria-labelledby="name">
         <div class="band">
-          <span class="avatar" aria-hidden="true">AA</span>
+          <img class="avatar" src={person.photoSmall} srcset={`${person.photoSmall} 160w, ${person.photo} 320w`} sizes="88px" width="88" height="88" alt="Aaron Adams" fetchpriority="high" />
           <div class="band-txt">
             <h1 id="name">{person.name}</h1>
             <p>Operations · Sales · Marketing · Programs</p>
@@ -181,7 +181,7 @@ const allPositions = [positions.primary, ...positions.others];
 
   /* ---------- profile ---------- */
   .band { display: flex; align-items: center; gap: 1rem; background: var(--team); color: #fff; padding: 1.25rem 1.5rem; flex-wrap: wrap; }
-  .avatar { width: 4.25rem; height: 4.25rem; border-radius: 50%; background: #fff; color: var(--team); display: grid; place-items: center; font-weight: 800; font-size: 1.4rem; letter-spacing: -.03em; flex: none; }
+  .avatar { width: 5.5rem; height: 5.5rem; border-radius: 50%; background: #fff; object-fit: cover; flex: none; box-shadow: 0 0 0 3px rgba(255,255,255,.9); }
   .band-txt { min-width: 0; }
   .band h1 { margin: 0; font-size: clamp(1.6rem, 4vw, 2rem); font-weight: 600; line-height: 1.1; }
   .band p { margin: .2rem 0 0; font-size: 1.05rem; }
